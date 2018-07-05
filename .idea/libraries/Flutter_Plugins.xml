@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="Flutter Plugins" type="FlutterPluginsLibraryType">
+    <CLASSES>
+      <root url="file://$USER_HOME$/soft/work/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences-0.4.2" />
+      <root url="file://$USER_HOME$/soft/work/flutter/.pub-cache/hosted/pub.dartlang.org/device_info-0.2.1" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
