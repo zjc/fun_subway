@@ -50,14 +50,6 @@ abstract class BasePresenter<VIEW extends BaseView, MODEL extends BaseModel> {
     model = null;
   }
 
-  void showSnackbar(String desc, String buttonName, String action) {
-
-  }
-
-  void
-
-  //由每个具体的Presenter去创建MODEL
-  MODEL
-
-  newInstance();
+//由每个具体的Presenter去创建MODEL
+  MODEL newInstance();
 }
