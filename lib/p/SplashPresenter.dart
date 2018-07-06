@@ -13,9 +13,7 @@ class SplashPresenter extends BasePresenter<SplashView, SplashModel> {
 
   void fetchConfig() {
     getModel().fetchConfig().then((responseBean) {
-      String configJson = json.encode(responseBean.data);
-      print("==========>json:" + configJson);
-      SharedPreferenceUtils.setString("config", configJson);
+      SharedPreferenceUtils.setString("config", json.encode(responseBean.data));
       getView().fetchConfigSuccess();
     });
   }

@@ -8,11 +8,11 @@ import 'package:fun_subway/framework/BaseState.dart';
 class Splash extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return SplashPageState();
+    return _SplashPageState();
   }
 }
 
-class SplashPageState extends BaseState<SplashPresenter, Splash>
+class _SplashPageState extends BaseState<SplashPresenter, Splash>
     implements SplashView {
   @override
   Widget build(BuildContext context) {

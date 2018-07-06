@@ -30,4 +30,9 @@ abstract class BaseState<PRESENTER extends BasePresenter,
   void showLoading() {
     
   }
+
+  @override
+  void showSnackbar(String desc,String buttonName,String action){
+
+  }
 }

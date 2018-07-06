@@ -6,7 +6,7 @@ abstract class BasePresenter<VIEW extends BaseView, MODEL extends BaseModel> {
 
   MODEL model;
 
-  BasePresenter(){
+  BasePresenter() {
     model = newInstance();
   }
 
@@ -30,16 +30,34 @@ abstract class BasePresenter<VIEW extends BaseView, MODEL extends BaseModel> {
     return model;
   }
 
+  void showSnackbar(String desc, String buttonName, String action) {
+    if (getView() != null) {
+      getView().showSnackbar(desc, buttonName, action);
+    }
+  }
+
+  void showSimpleSnackbar(String desc) {
+    showSnackbar(desc, null, null);
+  }
+
   //销毁P层
-  void onDestroy(){
+  void onDestroy() {
     unbindView();
     unbindModel();
   }
 
-  void unbindModel(){
+  void unbindModel() {
     model = null;
   }
 
+  void showSnackbar(String desc, String buttonName, String action) {
+
+  }
+
+  void
+
   //由每个具体的Presenter去创建MODEL
-  MODEL newInstance();
+  MODEL
+
+  newInstance();
 }
