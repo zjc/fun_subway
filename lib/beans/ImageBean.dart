@@ -1,5 +1,6 @@
 import 'package:fun_subway/beans/BaseBean.dart';
 import 'package:fun_subway/beans/ImageOptionsBean.dart';
+import 'package:fun_subway/model/ImageTypeFactory.dart';
 
 class ImageBean extends BaseBean {
   static final MAKE = 1;
@@ -82,9 +83,61 @@ class ImageBean extends BaseBean {
         "selectedNum": selectedNum,
         "number": number,
         "absolutelyPath": absolutelyPath,
-        "placeHolder":placeHolder,
+        "placeHolder": placeHolder,
         "from": from,
         "finished": finished,
         "imgType": imgType,
       };
+
+  static instanceImageBeans(List list) {
+    List<ImageBean> imageBeans;
+    if (list != null && list.isNotEmpty) {
+      imageBeans = list.map((map) {
+        return ImageBean.fromJson(map);
+      }).toList();
+    }
+    return imageBeans;
+  }
+
+  final double MAX_RATIO = 2.6667; //8:3 高:宽
+
+  bool isLongImg() {
+    double ratio = original.height.toDouble() / original.width.toDouble();
+    return ratio > MAX_RATIO;
+  }
+
+  bool isFinished() {
+    return finished == 1;
+  }
+
+  static String getDisplayUrl(
+      bool isNetworkAvailable,bool isWifi, ImageBean imageBean) {
+    if (isNetworkAvailable) {
+      if (isWifi) {
+        return imageBean.getOriginalUrl();
+      } else {
+        if (imageBean.isFinished()) {
+          return imageBean.getUrl();
+        } else {
+          return imageBean.getOriginalUrl();
+        }
+      }
+    }
+    return imageBean.getUrl();
+  }
+
+  String getOriginalUrl() {
+    return ImageTypeFactory.getOriginalGif(this);
+  }
+
+  String getUrl() {
+    if (isGif()) {
+      return ImageTypeFactory.getP18Webp(this);
+    }
+    return ImageTypeFactory.getOriginalGif(this);
+  }
+
+  bool isGif() {
+    return gif == 1;
+  }
 }

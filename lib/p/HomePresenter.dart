@@ -15,11 +15,11 @@ class HomePresenter extends BasePresenter<HomeView, HomeModel> {
     return new HomeModel();
   }
 
-  static final ITEM_TYPE_HOME_BANNER = 1; //首页banner图
-  static final ITEM_TYPE_HOME_HOT_TAGS = 2; //热门标签
-  static final ITEM_TYPE_HOME_TOPIC = 3; //话题
-  static final ITEM_TYPE_HOME_LAST_VIEWD = 4; //上次观看到这里
-  static final ITEM_TYPE_HOME_POST = 5; //动态内容
+  static const int ITEM_TYPE_HOME_BANNER = 1; //首页banner图
+  static const int ITEM_TYPE_HOME_HOT_TAGS = 2; //热门标签
+  static const int ITEM_TYPE_HOME_TOPIC = 3; //话题
+  static const int ITEM_TYPE_HOME_LAST_VIEWD = 4; //上次观看到这里
+  static const int ITEM_TYPE_HOME_POST = 5; //动态内容
 
   List<Pair> mDataSource = [];
 
@@ -43,26 +43,28 @@ class HomePresenter extends BasePresenter<HomeView, HomeModel> {
         updateLastViewed();
         addHotTopic();
       }
-      //callback
+      if(getView() != null){
+        getView().callback(mDataSource);
+      }
     });
   }
 
   void clearData() {
     for (int i = 0; i < mDataSource.length; i++) {
       Pair pair = mDataSource[i];
-      if (pair.first.cast<int>() == ITEM_TYPE_HOME_BANNER) {
+      if (pair.first == ITEM_TYPE_HOME_BANNER) {
         mDataSource.removeAt(i);
         i--;
         continue;
       }
 
-      if (pair.first.cast<int>() == ITEM_TYPE_HOME_HOT_TAGS) {
+      if (pair.first == ITEM_TYPE_HOME_HOT_TAGS) {
         mDataSource.removeAt(i);
         i--;
         continue;
       }
 
-      if (pair.first.cast<int>() == ITEM_TYPE_HOME_TOPIC) {
+      if (pair.first == ITEM_TYPE_HOME_TOPIC) {
         mDataSource.removeAt(i);
         break;
       }
@@ -101,7 +103,7 @@ class HomePresenter extends BasePresenter<HomeView, HomeModel> {
     mDataSource.remove(lastViewedPair);
     for (int i = 0; i < mDataSource.length; i++) {
       Pair pair = mDataSource[i];
-      if (pair.first.cast<int>() == ITEM_TYPE_HOME_POST) {
+      if (pair.first == ITEM_TYPE_HOME_POST) {
         mDataSource.insert(i, lastViewedPair);
         break;
       }

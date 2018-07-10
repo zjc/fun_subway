@@ -31,6 +31,12 @@ flutter:
   assets:
     - images/lake.jpg
     - images/ic_splash.gif
+    - images/ic_nonetwork.png
+    - images/ic_hot_tag.png
+    - images/ic_rotate.png
+    - images/ic_right_arrow.png
+    - images/ic_default_head.png
+    - images/ic_usercenter_delete_the_post.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

@@ -1,6 +1,7 @@
 void main(){
-  var string = 'dartlang';
-  string.substring(1);    // 'artlang'
-  var s = string.substring(0, string.length-1); // 'art'
-  print(s);
+   var uri = new Uri(scheme: "https",host: "www.baidu.com");
+
+   uri = uri.resolve("query=123");
+
+   print(uri.toString());
 }

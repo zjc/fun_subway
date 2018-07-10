@@ -22,7 +22,7 @@ class CommentBean extends BaseBean {
 
   final int userId;
 
-  final String content;
+  String content;
 
   final int replyCount;
 
@@ -77,7 +77,7 @@ class CommentBean extends BaseBean {
       replyNickname: json["replyNickname"],
       replyUserId: json["replyUserId"],
       commentCode: json["commentCode"],
-      commentImgs: _instanceCommentImgs(json),
+      commentImgs: ImageBean.instanceImageBeans(json["commentImgs"]),
     );
   }
 
@@ -101,15 +101,4 @@ class CommentBean extends BaseBean {
     "commentCode":commentCode,
     "commentImgs":commentImgs,
   };
-
-  static _instanceCommentImgs(Map<String, dynamic> map) {
-    List<ImageBean> imageBeans;
-    List list = map["commentImgs"];
-    if (list != null && list.isNotEmpty) {
-      imageBeans = list.map((map) {
-        return ImageBean.fromJson(map);
-      }).toList();
-    }
-    return imageBeans;
-  }
 }

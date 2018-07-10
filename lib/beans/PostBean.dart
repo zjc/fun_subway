@@ -1,9 +1,11 @@
 import 'package:fun_subway/beans/BaseBean.dart';
 import 'package:fun_subway/beans/CommentBean.dart';
 import 'package:fun_subway/beans/ImageBean.dart';
+import 'package:fun_subway/beans/ImageOptionsBean.dart';
+import 'package:flutter/material.dart';
 
 class PostBean extends BaseBean {
-  final String content;
+  String content;
   final int commentCount;
   final bool dislike;
   final int dislikeCount;
@@ -56,26 +58,16 @@ class PostBean extends BaseBean {
       gmtCreate: map["gmtCreate"],
       profilePicture: map["profilePicture"],
       id: map["id"],
-      memeImgs: _instanceImageBeans(map["memeImgs"]),
+      memeImgs: ImageBean.instanceImageBeans(map["memeImgs"]),
       nickname: map["nickname"],
       show: map["show"],
       topicNames: map["topicNames"],
       userId: map["userId"],
-      showImgs: _instanceImageBeans(map["showImgs"]),
+      showImgs: ImageBean.instanceImageBeans(map["showImgs"]),
       topic: map["topic"],
-      great: map["great"],
+      great: CommentBean.fromJson(map["great"]),
       ellipses: map["ellipses"],
     );
-  }
-
-  static _instanceImageBeans(List list) {
-    List<ImageBean> imageBeans;
-    if (list != null && list.isNotEmpty) {
-      imageBeans = list.map((map) {
-        return ImageBean.fromJson(map);
-      }).toList();
-    }
-    return imageBeans;
   }
 
   Map<String, dynamic> toJson() => {
@@ -99,4 +91,68 @@ class PostBean extends BaseBean {
         "great": great,
         "ellipses": ellipses,
       };
+
+  //根据图片的数量，返回列的数量
+  static int getColumnCount(int size) {
+    if (size == 1) {
+      return 1;
+    }
+    if (size == 2 || size == 4) {
+      return 2;
+    }
+    return 3;
+  }
+
+  static Size getDisplaySize(
+      BuildContext context, int imageCount, ImageBean imageBean) {
+    double displayWidth = MediaQuery.of(context).size.width - 20;
+    Size size;
+    if (imageCount == 1) {
+      if (imageBean.isLongImg()) {
+        double ratio = 4.0 / 3.0;
+        double height = (displayWidth / ratio);
+        double width = displayWidth;
+        if (height >= displayWidth) {
+          height = displayWidth;
+          width = height * ratio;
+        }
+        size = new Size(width, height);
+      } else {
+        if (imageBean.isGif()) {
+          ImageOptionsBean imageOptionsBean = imageBean.original;
+          double ratio = imageOptionsBean.width.toDouble() /
+              imageOptionsBean.height.toDouble();
+          double width = displayWidth;
+          double height = (width / ratio);
+          size = new Size(width, height);
+        } else {
+          ImageOptionsBean imageOptionsBean = imageBean.original;
+          double ratio = imageOptionsBean.width.toDouble() /
+              imageOptionsBean.height.toDouble();
+          if (imageOptionsBean.width > imageOptionsBean.height) {
+            if (imageOptionsBean.width > displayWidth) {
+              size = new Size(displayWidth, size.width / ratio);
+            } else {
+              size = new Size(imageOptionsBean.width.toDouble(),
+                  imageOptionsBean.height.toDouble());
+            }
+          } else {
+            if (imageOptionsBean.height > displayWidth) {
+              size = new Size(size.height * ratio, displayWidth);
+            } else {
+              size = new Size(imageOptionsBean.width.toDouble(),
+                  imageOptionsBean.height.toDouble());
+            }
+          }
+        }
+      }
+    } else if (imageCount == 2 || imageCount == 4) {
+      displayWidth = displayWidth - 3;
+      size = new Size(displayWidth / 2, displayWidth / 2);
+    } else {
+      displayWidth = displayWidth - 3 * 2;
+      size = new Size(displayWidth / 3, displayWidth / 3);
+    }
+    return size;
+  }
 }

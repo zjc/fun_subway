@@ -20,7 +20,7 @@ class HomeBanner extends BaseBean with BannerEntity {
   get bannerAction => url;
 
   @override
-  get bannerTitle => "";
+  get bannerTitle => "123";
 
   @override
   get bannerUrl => background;

@@ -1,5 +1,9 @@
+import 'package:flutter/material.dart';
+
 abstract class BaseView {
-  void showLoading();
+  Widget showLoading();
 
   void showSnackbar(String desc,String buttonName,String action);
+
+  Widget showError();
 }

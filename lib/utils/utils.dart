@@ -21,15 +21,23 @@ class Utils {
   }
 }
 
-class SharedPreferenceUtils{
-  static void setString(String key,String object) async{
+class TextUtils {
+  static isEmpty(String str) {
+    if (str == null || str.isEmpty || "" == str.trim()) {
+      return true;
+    }
+    return false;
+  }
+}
+
+class SharedPreferenceUtils {
+  static void setString(String key, String object) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString(key, object);
   }
 
-  static dynamic get(String key) async{
+  static dynamic get(String key) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.get(key);
   }
-
 }

@@ -1,4 +1,3 @@
-
 class ResponseBean<T> {
   final String code;
   final T data;
@@ -6,5 +5,5 @@ class ResponseBean<T> {
   final String error_reason;
 
   const ResponseBean(
-      this.code, this.data, this.error_code, this.error_reason);
+      {this.code, this.data, this.error_code, this.error_reason});
 }

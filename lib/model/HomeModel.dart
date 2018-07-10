@@ -14,10 +14,10 @@ class HomeModel extends BaseModel {
       Map<String, dynamic> map = await get(Api.HOME_FEED, params);
       HomeFeedBean homeFeedBean = HomeFeedBean.fromJson(map["data"]);
       print("homeFeedBean json:" + json.encode(homeFeedBean.toJson()));
-      return newResponseBean(
-          map["code"], homeFeedBean, map["error_code"], map["error_reason"]);
+      return newSuccessResponseBean(
+          map["code"], homeFeedBean, map["error_reason"]);
     } catch (exception) {
-      return newResponseBean("-1000", null, "-1000", "服务器响应失败");
+      return newErrorResponseBean(null, "-1000", exception.toString());
     }
   }
 }

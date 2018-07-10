@@ -33,7 +33,7 @@ class BannerWidget extends StatefulWidget {
 
 class _BannerState extends State<BannerWidget> {
   Timer timer;
-  int selectIndex;
+  int selectIndex = 0;
 
   PageController controller;
 
@@ -105,28 +105,18 @@ class _BannerState extends State<BannerWidget> {
 
   Widget tips() {
     return Align(
-      alignment: Alignment.bottomCenter,
-      child: Container(
-        height: 32.0,
-        padding: EdgeInsets.all(6.0),
-        color: Colors.black45,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Text(
-              widget.entities[selectIndex].bannerTitle,
-              style: new TextStyle(color: Colors.white),
-            ),
-            Row(
-              children: <Widget>[circle()],
-            )
-          ],
-        ),
-      ),
-    );
+        alignment: Alignment.bottomCenter,
+        child: Container(
+          height: 32.0,
+          padding: EdgeInsets.all(6.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: circle(),
+          ),
+        ));
   }
 
-  Widget circle() {
+  List<Widget> circle() {
     List<Widget> circle = [];
     for (var i = 0; i < widget.entities.length; i++) {
       circle.add(Container(
@@ -139,6 +129,7 @@ class _BannerState extends State<BannerWidget> {
         ),
       ));
     }
+    return circle;
   }
 
   @override
