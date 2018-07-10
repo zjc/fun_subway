@@ -17,11 +17,10 @@ class ImageTypeFactory {
    */
 
   static String getOriginalWebp(ImageBean imageBean) {
-    return getOriginal(imageBean)
-            .resolve("webp")
-            .resolve(imageBean.imgName)
-            .toString() +
-        WEBP_SUFFIX;
+    StringBuffer sb =
+        append(append(getOriginal(imageBean), "webp"), imageBean.imgName);
+    sb.write(WEBP_SUFFIX);
+    return sb.toString();
   }
 
   /**
@@ -32,8 +31,10 @@ class ImageTypeFactory {
    */
 
   static String getOriginalGif(ImageBean imageBean) {
-    String url = getOriginal(imageBean).resolve("original").resolve(imageBean.imgName).toString();
-    return url + GIF_SUFFIX;
+    StringBuffer sb =
+        append(append(getOriginal(imageBean), "original/"), imageBean.imgName);
+    sb.write(GIF_SUFFIX);
+    return sb.toString();
   }
 
   /**
@@ -43,11 +44,11 @@ class ImageTypeFactory {
    * @return
    */
   static String getP18Webp(ImageBean imageBean) {
-    Uri builder = getDrawing(imageBean);
+    StringBuffer builder = getDrawing(imageBean);
     if (builder != null) {
-      String url =
-          builder.resolve("webp18").resolve(imageBean.imgName).toString();
-      return url + WEBP_SUFFIX;
+      builder = append(append(builder, "webp18"), imageBean.imgName);
+      builder.write(WEBP_SUFFIX);
+      return builder.toString();
     }
     return null;
   }
@@ -59,10 +60,11 @@ class ImageTypeFactory {
    * @return
    */
   String getP18Gif(ImageBean imageBean) {
-    Uri builder = getDrawing(imageBean);
+    StringBuffer builder = getDrawing(imageBean);
     if (builder != null) {
-      String url = builder.resolve("p18").resolve(imageBean.imgName).toString();
-      return url + GIF_SUFFIX;
+      builder = append(append(builder, "p18"), imageBean.imgName);
+      builder.write(GIF_SUFFIX);
+      return builder.toString();
     }
     return null;
   }
@@ -75,10 +77,11 @@ class ImageTypeFactory {
    */
 
   static String get1M(ImageBean imageBean) {
-    Uri builder = getDrawing(imageBean);
+    StringBuffer builder = getDrawing(imageBean);
     if (builder != null) {
-      String url = builder.resolve("one").resolve(imageBean.imgName).toString();
-      return url + GIF_SUFFIX;
+      builder = append(append(builder, "one"), imageBean.imgName);
+      builder.write(GIF_SUFFIX);
+      return builder.toString();
     }
     return null;
   }
@@ -91,10 +94,11 @@ class ImageTypeFactory {
    */
 
   static String get2M(ImageBean imageBean) {
-    Uri builder = getDrawing(imageBean);
+    StringBuffer builder = getDrawing(imageBean);
     if (builder != null) {
-      return builder.resolve("two").resolve(imageBean.imgName).toString() +
-          GIF_SUFFIX;
+      builder = append(append(builder, "two"), imageBean.imgName);
+      builder.write(GIF_SUFFIX);
+      return builder.toString();
     }
     return null;
   }
@@ -107,10 +111,11 @@ class ImageTypeFactory {
    */
 
   static String getVideo(ImageBean imageBean) {
-    Uri builder = getDrawing(imageBean);
+    StringBuffer builder = getDrawing(imageBean);
     if (builder != null) {
-      return builder.resolve("video").resolve(imageBean.imgName).toString() +
-          VIDEO_SUFFIX;
+      builder = append(append(builder, "video"), imageBean.imgName);
+      builder.write(VIDEO_SUFFIX);
+      return builder.toString();
     }
     return null;
   }
@@ -122,26 +127,38 @@ class ImageTypeFactory {
    * @return
    */
   static String getFirstFrame(ImageBean imageBean) {
-    Uri builder = getDrawing(imageBean);
-    if (builder != null) {
-      return builder.resolve("static").resolve(imageBean.imgName).toString() +
-          JPEG_SUFFIX;
+    StringBuffer buffer = getDrawing(imageBean);
+    if (buffer != null) {
+      buffer = append(append(buffer, "static"), imageBean.imgName);
+      buffer.write(JPEG_SUFFIX);
+      return buffer.toString();
     }
     return null;
   }
 
-  static Uri getDrawing(ImageBean imageBean) {
+  static StringBuffer append(StringBuffer old, String path) {
+    old.write(path);
+    return old;
+  }
+
+  static StringBuffer getDrawing(ImageBean imageBean) {
     if (imageBean.gif == 1) {
       return getOriginal(imageBean);
     } else
       return null;
   }
 
-  static Uri getOriginal(ImageBean imageBean) {
-    return getImageHost().resolve(imageBean.urlPrefix);
+  static StringBuffer getOriginal(ImageBean imageBean) {
+    String urlPrefix = imageBean.urlPrefix;
+    StringBuffer sb = getImageHost();
+    if (!urlPrefix.startsWith("/")) {
+      sb.write("/");
+    }
+    sb.write(urlPrefix);
+    return sb;
   }
 
-  static Uri getImageHost() {
-    return Uri.parse("http://image.51biaoqing.com");
+  static StringBuffer getImageHost() {
+    return new StringBuffer("http://image.51biaoqing.com");
   }
 }

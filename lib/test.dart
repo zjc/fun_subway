@@ -1,7 +1,5 @@
 void main(){
-   var uri = new Uri(scheme: "https",host: "www.baidu.com");
+  String temp = "123";
 
-   uri = uri.resolve("query=123");
-
-   print(uri.toString());
+   print(temp.startsWith("/"));
 }

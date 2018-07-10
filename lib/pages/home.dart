@@ -66,7 +66,7 @@ class HomeState extends LoadMoreState<HomePresenter, HomePage>
     Widget widget;
     int itemType = pair.first;
     switch (itemType) {
-      case HomePresenter.ITEM_TYPE_HOME_BANNER:
+      case HomePresenter.ITEM_TYPE_HOME_BANNER: //banner
         widget = _buildBannerWidget(pair);
         break;
       case HomePresenter.ITEM_TYPE_HOME_HOT_TAGS:
@@ -91,7 +91,8 @@ class HomeState extends LoadMoreState<HomePresenter, HomePage>
 
   Widget _buildPostAvatar(PostBean postBean) {
     return new Container(
-      height: 40.0,
+      height: 52.0,
+      padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
       child: new Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
@@ -162,24 +163,29 @@ class HomeState extends LoadMoreState<HomePresenter, HomePage>
     List<ImageBean> postImages =
         postBean.show ? postBean.showImgs : postBean.memeImgs;
     int count = PostBean.getColumnCount(postImages.length);
-    //获取屏幕宽度
     widgets.add(new Container(
-      height: 180.0,
+        padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
         child: new GridView.count(
-      crossAxisCount: count,
-      mainAxisSpacing: 3.0,
-      crossAxisSpacing: 3.0,
-      children: postImages.map((ImageBean imagebean) {
-        Size size =
-            PostBean.getDisplaySize(context, postImages.length, imagebean);
-        return new Image.network(
-          ImageBean.getDisplayUrl(isNetworkAvailable, isWifi, imagebean),
-          fit: BoxFit.cover,
-          width: size.width,
-          height: size.height,
-        );
-      }).toList(),
-    )));
+          shrinkWrap: true,
+          primary: true,
+          crossAxisCount: count,
+          mainAxisSpacing: 3.0,
+          crossAxisSpacing: 3.0,
+          children: postImages.map((ImageBean imagebean) {
+            Size size =
+                PostBean.getDisplaySize(context, postImages.length, imagebean);
+            return new Card(
+              shape: new RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(3.0))),
+              child: new Image.network(
+                ImageBean.getDisplayUrl(isNetworkAvailable, isWifi, imagebean),
+                fit: BoxFit.cover,
+                width: size.width,
+                height: size.height,
+              ),
+            );
+          }).toList(),
+        )));
 
     return new Column(
       children: widgets,

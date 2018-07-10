@@ -28,7 +28,7 @@ class HomePresenter extends BasePresenter<HomeView, HomeModel> {
   HomeFeedBean homeFeedBean;
 
   void fetchHomeData() {
-    fetchFeedList(1, 10);
+    fetchFeedList(1, 20);
   }
 
   void fetchFeedList(int pageNum, int pageSize) {
