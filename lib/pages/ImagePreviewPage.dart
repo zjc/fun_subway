@@ -21,7 +21,7 @@ class ImagePreviewPage extends StatefulWidget {
       for (int i = 0; i < imageBeans.length; i++) {
         ImageBean bean = imageBeans[i];
         if (bean.id == imageBean.id) {
-          currentIndex = i + 1;
+          currentIndex = i;
           break;
         }
       }
@@ -32,7 +32,8 @@ class ImagePreviewPage extends StatefulWidget {
 }
 
 class ImagePreviewState
-    extends BaseState<ImagePreviewPresenter, ImagePreviewPage> implements ImagePreviewView{
+    extends BaseState<ImagePreviewPresenter, ImagePreviewPage>
+    implements ImagePreviewView {
   PageController controller;
 
   @override
@@ -68,7 +69,8 @@ class ImagePreviewState
             controller: controller,
             onPageChanged: onPageChanged,
             itemBuilder: (context, index) {
-              String displayUrl = ImageBean.getDisplayUrl(true, true, widget.imageBeans[index]);
+              String displayUrl =
+                  ImageBean.getDisplayUrl(true, true, widget.imageBeans[index]);
               return new PhotoView(
                 imageProvider: new NetworkImage(displayUrl),
                 loadingChild: showLoading(),
