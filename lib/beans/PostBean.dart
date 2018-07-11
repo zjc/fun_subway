@@ -131,14 +131,14 @@ class PostBean extends BaseBean {
               imageOptionsBean.height.toDouble();
           if (imageOptionsBean.width > imageOptionsBean.height) {
             if (imageOptionsBean.width > displayWidth) {
-              size = new Size(displayWidth, size.width / ratio);
+              size = new Size(displayWidth, displayWidth / ratio);
             } else {
               size = new Size(imageOptionsBean.width.toDouble(),
                   imageOptionsBean.height.toDouble());
             }
           } else {
             if (imageOptionsBean.height > displayWidth) {
-              size = new Size(size.height * ratio, displayWidth);
+              size = new Size(displayWidth * ratio, displayWidth);
             } else {
               size = new Size(imageOptionsBean.width.toDouble(),
                   imageOptionsBean.height.toDouble());

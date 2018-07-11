@@ -33,7 +33,12 @@ class HomeFeedBean extends BaseBean {
       }).toList();
     }
 
-    List hotTags = dataMap["hotTags"].cast<String>();
+    List<String> hotTags;
+
+    List hotTagList = dataMap["hotTags"];
+    if (hotTagList != null && hotTagList.isNotEmpty) {
+      hotTags = hotTagList.cast<String>();
+    }
 
     List<PostBean> postBeans;
     List posts = dataMap["posts"];

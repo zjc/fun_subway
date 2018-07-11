@@ -37,6 +37,15 @@ flutter:
     - images/ic_right_arrow.png
     - images/ic_default_head.png
     - images/ic_usercenter_delete_the_post.png
+    - images/ic_home_share.png
+    - images/ic_home_comment.png
+    - images/ic_home_unlike.png
+    - images/ic_home_like.png
+    - images/ic_home_like2.png
+    - images/ic_home_unlike2.png
+    - images/ic_awesome_comment.png
+    - images/ic_white_left_arrow.png
+    - images/ic_image_preview_more.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

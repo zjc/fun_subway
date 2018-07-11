@@ -27,24 +27,39 @@ class HomePresenter extends BasePresenter<HomeView, HomeModel> {
 
   HomeFeedBean homeFeedBean;
 
+  var pageSize = 10;
+
   void fetchHomeData() {
-    fetchFeedList(1, 20);
+    fetchFeedList(1, pageSize);
+  }
+
+  void loadMore(){
+    fetchFeedList(homeFeedBean.page + 1, pageSize);
   }
 
   void fetchFeedList(int pageNum, int pageSize) {
     model.fetchFeedList(pageNum, pageSize).then((bean) {
       homeFeedBean = bean.data;
-      if (pageNum == 1) {
-        if (homeFeedBean.posts != null && homeFeedBean.posts.isNotEmpty) {
-          showSimpleSnackbar(
-              "为您更新" + homeFeedBean.posts.length.toString() + "条动态");
+      if(homeFeedBean != null){
+        if (pageNum == 1) {
+          if (homeFeedBean.posts != null && homeFeedBean.posts.isNotEmpty) {
+            showSimpleSnackbar(
+                "为您更新" + homeFeedBean.posts.length.toString() + "条动态");
+          }
+          topicIndex = homeFeedBean.topicIndex;
+          updateHomeData();
+          updateLastViewed();
+          addHotTopic();
+        }else{
+          if(homeFeedBean.posts != null && homeFeedBean.posts.isNotEmpty){
+            List<Pair> postPairs = createPostPairs(homeFeedBean.posts);
+            mDataSource.addAll(postPairs);
+          }
         }
-        updateHomeData();
-        updateLastViewed();
-        addHotTopic();
-      }
-      if(getView() != null){
-        getView().callback(mDataSource);
+
+        if(getView() != null){
+          getView().callback(mDataSource);
+        }
       }
     });
   }
@@ -134,6 +149,7 @@ class HomePresenter extends BasePresenter<HomeView, HomeModel> {
   void addHotTopic() {
     Pair<int, List<TopicBean>> hotTopicsPair =
         new Pair(ITEM_TYPE_HOME_TOPIC, homeFeedBean.topics);
+    print("");
     if (topicIndex > mDataSource.length) {
       mDataSource.add(hotTopicsPair);
     } else {

@@ -6,38 +6,27 @@ import 'package:fun_subway/framework/LoadMoreView.dart';
 import 'BaseState.dart';
 
 abstract class LoadMoreState<PRESENTER extends BasePresenter,
-STATEFUL_WIDGET extends StatefulWidget>
-    extends BaseState<PRESENTER, STATEFUL_WIDGET>
-    implements LoadMoreView {
-
-
-  GlobalKey<ScaffoldState> scaffoldKey;
-  GlobalKey<RefreshIndicatorState> refreshIndicatorKey;
-
+        STATEFUL_WIDGET extends StatefulWidget>
+    extends BaseState<PRESENTER, STATEFUL_WIDGET> implements LoadMoreView {
+  GlobalKey<RefreshIndicatorState> refreshIndicatorKey = new GlobalKey<RefreshIndicatorState>();
   @override
   void initState() {
     super.initState();
-    scaffoldKey = new GlobalKey<ScaffoldState>();
-    refreshIndicatorKey = new GlobalKey<RefreshIndicatorState>();
   }
 
   Future<Null> handleRefresh() {
     final Completer<Null> completer = new Completer<Null>();
     new Timer(const Duration(seconds: 3), () {
+      refreshData();
       completer.complete(null);
     });
     return completer.future.then((_) {
-      scaffoldKey.currentState?.showSnackBar(new SnackBar(
-          content: const Text('Refresh complete'),
-          action: new SnackBarAction(
-              label: 'RETRY',
-              onPressed: () {
-                refreshIndicatorKey.currentState.show();
-              }
-          )
-      ));
+      //刷新完成
     });
   }
+
+  //下拉刷新
+  void refreshData();
 
   @override
   void disableFooter() {

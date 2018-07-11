@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fun_subway/utils/utils.dart';
 import 'BaseView.dart';
 import 'BasePresenter.dart';
 
@@ -32,10 +33,14 @@ abstract class BaseState<PRESENTER extends BasePresenter,
     );
   }
 
+  void showSimpleSnackbar(String desc){
+    showSnackbar(desc,null,null);
+  }
+
   @override
   void showSnackbar(String desc, String buttonName, String action) {
     var snackBar = new SnackBar(content: new Text(desc));
-    if (buttonName != null && buttonName.isNotEmpty) {
+    if (!TextUtils.isEmpty(buttonName)) {
       snackBar = new SnackBar(
         content: new Text(desc),
         action: new SnackBarAction(
