@@ -46,6 +46,9 @@ flutter:
     - images/ic_awesome_comment.png
     - images/ic_white_left_arrow.png
     - images/ic_image_preview_more.png
+    - images/ic_home_collection.png
+    - images/ic_home_download.png
+    - images/ic_home_share.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:
