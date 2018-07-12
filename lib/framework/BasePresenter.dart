@@ -1,5 +1,5 @@
-import 'BaseView.dart';
-import 'BaseModel.dart';
+import 'package:fun_subway/framework/BaseView.dart';
+import 'package:fun_subway/framework/BaseModel.dart';
 
 abstract class BasePresenter<VIEW extends BaseView, MODEL extends BaseModel> {
   VIEW referenceView;

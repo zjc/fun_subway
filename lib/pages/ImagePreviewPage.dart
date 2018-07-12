@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:fun_subway/beans/ImageBean.dart';
+import 'package:fun_subway/business/beans/ImageBean.dart';
 import 'package:fun_subway/framework/BaseState.dart';
-import 'package:fun_subway/p/ImagePreviewPresenter.dart';
-import 'package:fun_subway/view/ImagePreviewView.dart';
+import 'package:fun_subway/business/p/ImagePreviewPresenter.dart';
+import 'package:fun_subway/business/view/ImagePreviewView.dart';
 import 'package:fun_subway/widget/photo_view/PhotoView.dart';
-
-int mPageSize = 1;
-int currentIndex = 1;
 
 class ImagePreviewPage extends StatefulWidget {
   ImageBean imageBean;
 
   List<ImageBean> imageBeans;
+
+  int mPageSize = 1;
+  int currentIndex = 1;
 
   ImagePreviewPage({this.imageBean, this.imageBeans});
 
@@ -39,7 +39,7 @@ class ImagePreviewState
   @override
   void initState() {
     super.initState();
-    controller = PageController(initialPage: currentIndex - 1);
+    controller = PageController(initialPage: widget.currentIndex - 1);
   }
 
   Widget _buildAppBar() {
@@ -59,7 +59,7 @@ class ImagePreviewState
     return new Scaffold(
         appBar: new AppBar(
           title: new Text(
-            '${currentIndex}/${mPageSize}',
+            '${widget.currentIndex}/${widget.mPageSize}',
             style: new TextStyle(color: Colors.white, fontSize: 16.0),
           ),
           actions: <Widget>[
@@ -86,7 +86,7 @@ class ImagePreviewState
                 new Expanded(
                   flex: 1,
                   child: PageView.builder(
-                      itemCount: mPageSize,
+                      itemCount: widget.mPageSize,
                       controller: controller,
                       onPageChanged: onPageChanged,
                       itemBuilder: (context, index) {
@@ -178,7 +178,7 @@ class ImagePreviewState
   }
 
   onPageChanged(index) {
-    currentIndex = index + 1;
+    widget.currentIndex = index + 1;
     setState(() {});
   }
 

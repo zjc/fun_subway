@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fun_subway/framework/BaseState.dart';
-import 'package:fun_subway/p/MakePresenter.dart';
-import 'package:fun_subway/view/MakeView.dart';
+import 'package:fun_subway/business/p/MakePresenter.dart';
+import 'package:fun_subway/business/view/MakeView.dart';
 
 class MakePage extends StatefulWidget {
   @override

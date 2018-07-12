@@ -1,4 +1,4 @@
-import 'package:fun_subway/beans/BaseBean.dart';
+import 'package:fun_subway/business/beans/BaseBean.dart';
 import 'package:fun_subway/widget/BannerEntity.dart';
 
 class HomeBanner extends BaseBean with BannerEntity {

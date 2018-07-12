@@ -49,6 +49,17 @@ flutter:
     - images/ic_home_collection.png
     - images/ic_home_download.png
     - images/ic_home_share.png
+    - images/ic_my_works.png
+    - images/ic_my_message.png
+    - images/ic_my_collection.png
+    - images/ic_mine_topic.png
+    - images/ic_mine_feedback.png
+    - images/ic_mine_share.png
+    - images/ic_mine_update.png
+    - images/ic_mine_about.png
+    - images/ic_setting.png
+    - images/bg_user_center.png
+
 
   # To add assets to your application, add an assets section, like this:
   # assets:

@@ -1,4 +1,4 @@
-import 'package:fun_subway/beans/ImageBean.dart';
+import 'package:fun_subway/business/beans/ImageBean.dart';
 
 class ImageTypeFactory {
   static final String WEBP_SUFFIX = ".webp";

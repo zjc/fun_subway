@@ -1,6 +1,6 @@
-import 'package:fun_subway/beans/BaseBean.dart';
-import 'package:fun_subway/beans/ImageOptionsBean.dart';
-import 'package:fun_subway/model/ImageTypeFactory.dart';
+import 'package:fun_subway/business/beans/BaseBean.dart';
+import 'package:fun_subway/business/beans/ImageOptionsBean.dart';
+import 'package:fun_subway/business/model/ImageTypeFactory.dart';
 
 class ImageBean extends BaseBean {
   static final MAKE = 1;

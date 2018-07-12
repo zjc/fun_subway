@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fun_subway/beans/ImageBean.dart';
+import 'package:fun_subway/business/beans/ImageBean.dart';
 import 'package:fun_subway/pages/ImagePreviewPage.dart';
 
 class FunRouteFactory {

@@ -1,7 +1,7 @@
-import 'package:fun_subway/beans/BaseBean.dart';
-import 'package:fun_subway/beans/CommentBean.dart';
-import 'package:fun_subway/beans/ImageBean.dart';
-import 'package:fun_subway/beans/ImageOptionsBean.dart';
+import 'package:fun_subway/business/beans/BaseBean.dart';
+import 'package:fun_subway/business/beans/CommentBean.dart';
+import 'package:fun_subway/business/beans/ImageBean.dart';
+import 'package:fun_subway/business/beans/ImageOptionsBean.dart';
 import 'package:flutter/material.dart';
 
 class PostBean extends BaseBean {

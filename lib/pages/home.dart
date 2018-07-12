@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:fun_subway/beans/HomeBanner.dart';
-import 'package:fun_subway/beans/ImageBean.dart';
-import 'package:fun_subway/beans/PostBean.dart';
-import 'package:fun_subway/beans/TopicBean.dart';
-import 'package:fun_subway/framework/BaseState.dart';
+import 'package:fun_subway/business/beans/HomeBanner.dart';
+import 'package:fun_subway/business/beans/ImageBean.dart';
+import 'package:fun_subway/business/beans/PostBean.dart';
+import 'package:fun_subway/business/beans/TopicBean.dart';
 import 'package:fun_subway/framework/LoadMoreState.dart';
-import 'package:fun_subway/p/HomePresenter.dart';
+import 'package:fun_subway/business/p/HomePresenter.dart';
 import 'package:fun_subway/utils/Pair.dart';
 import 'package:fun_subway/utils/utils.dart';
 import 'package:fun_subway/utils/FunRouteFactory.dart';
-import 'package:fun_subway/view/HomeView.dart';
+import 'package:fun_subway/business/view/HomeView.dart';
 import 'package:fun_subway/widget/BannerWidget.dart';
 import 'package:flutter/gestures.dart';
 
@@ -25,12 +24,21 @@ class HomeState extends LoadMoreState<HomePresenter, HomePage>
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        appBar: new AppBar(
-          title: _buildSearchWidget(),
-          backgroundColor: Colors.white,
-          elevation: 0.0,
-        ),
-        body: _buildListWidget());
+      appBar: new AppBar(
+        title: _buildSearchWidget(),
+        backgroundColor: Colors.white,
+        elevation: 0.0,
+      ),
+      body: _buildListWidget(),
+      floatingActionButton: new FloatingActionButton(
+        backgroundColor: Colors.cyanAccent,
+        tooltip: "jump to publish",
+        onPressed: (){
+          showSimpleSnackbar("跳转发布界面");
+        },
+        child: new Icon(Icons.add),
+      ),
+    );
   }
 
   ScrollController _scrollController;
@@ -134,6 +142,7 @@ class HomeState extends LoadMoreState<HomePresenter, HomePage>
 
   Widget _buildCommentWidget(PostBean postBean) {
     if (postBean.great == null) {
+      //没有神评论
       return new Container();
     }
     var commentBean = postBean.great;

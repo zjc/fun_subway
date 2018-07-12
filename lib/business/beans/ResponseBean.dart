@@ -1,3 +1,5 @@
+import 'package:fun_subway/utils/utils.dart';
+
 class ResponseBean<T> {
   final String code;
   final T data;
@@ -6,4 +8,8 @@ class ResponseBean<T> {
 
   const ResponseBean(
       {this.code, this.data, this.error_code, this.error_reason});
+
+  bool isSuccess() {
+    return !TextUtils.isEmpty(code) && "0000" == code;
+  }
 }

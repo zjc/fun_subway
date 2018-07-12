@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:fun_subway/beans/HomeFeedBean.dart';
-import 'package:fun_subway/beans/ResponseBean.dart';
+import 'package:fun_subway/business/beans/HomeFeedBean.dart';
+import 'package:fun_subway/business/beans/ResponseBean.dart';
 import 'package:fun_subway/framework/BaseModel.dart';
 import 'package:fun_subway/net/Api.dart';
 
@@ -14,10 +14,10 @@ class HomeModel extends BaseModel {
       Map<String, dynamic> map = await get(Api.HOME_FEED, params);
       HomeFeedBean homeFeedBean = HomeFeedBean.fromJson(map["data"]);
       print("homeFeedBean json:" + json.encode(homeFeedBean.toJson()));
-      return newSuccessResponseBean(
-          map["code"], homeFeedBean, map["error_reason"]);
+      return newResponseBean(
+          map["code"], homeFeedBean, map["error_code"], map["error_reason"]);
     } catch (exception) {
-      return newErrorResponseBean(null, "-1000", exception.toString());
+      throw exception;
     }
   }
 }

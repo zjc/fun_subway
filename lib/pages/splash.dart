@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:fun_subway/view/SplashView.dart';
-import 'package:fun_subway/p/SplashPresenter.dart';
+import 'package:fun_subway/business/view/SplashView.dart';
+import 'package:fun_subway/business/p/SplashPresenter.dart';
 import 'package:fun_subway/framework/BaseState.dart';
 
 class Splash extends StatefulWidget {

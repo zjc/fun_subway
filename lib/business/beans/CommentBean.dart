@@ -1,5 +1,5 @@
-import 'package:fun_subway/beans/BaseBean.dart';
-import 'package:fun_subway/beans/ImageBean.dart';
+import 'package:fun_subway/business/beans/BaseBean.dart';
+import 'package:fun_subway/business/beans/ImageBean.dart';
 
 class CommentBean extends BaseBean {
   final String profilePicture;

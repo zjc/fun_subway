@@ -1,7 +1,7 @@
-import 'package:fun_subway/beans/BaseBean.dart';
-import 'package:fun_subway/beans/HomeBanner.dart';
-import 'package:fun_subway/beans/PostBean.dart';
-import 'package:fun_subway/beans/TopicBean.dart';
+import 'package:fun_subway/business/beans/BaseBean.dart';
+import 'package:fun_subway/business/beans/HomeBanner.dart';
+import 'package:fun_subway/business/beans/PostBean.dart';
+import 'package:fun_subway/business/beans/TopicBean.dart';
 
 class HomeFeedBean extends BaseBean {
   final List<HomeBanner> banners;
