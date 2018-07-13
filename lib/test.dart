@@ -1,5 +1,4 @@
 void main(){
-  String temp = "123";
-
-   print(temp.startsWith("/"));
+  RegExp mobile = new RegExp(r"(0|86)?(1)[0-9]{10}");
+  print(mobile.hasMatch("01381234567"));
 }

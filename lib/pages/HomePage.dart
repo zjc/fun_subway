@@ -5,6 +5,7 @@ import 'package:fun_subway/business/beans/PostBean.dart';
 import 'package:fun_subway/business/beans/TopicBean.dart';
 import 'package:fun_subway/framework/LoadMoreState.dart';
 import 'package:fun_subway/business/p/HomePresenter.dart';
+import 'package:fun_subway/utils/FunColors.dart';
 import 'package:fun_subway/utils/Pair.dart';
 import 'package:fun_subway/utils/utils.dart';
 import 'package:fun_subway/utils/FunRouteFactory.dart';
@@ -31,7 +32,7 @@ class HomeState extends LoadMoreState<HomePresenter, HomePage>
       ),
       body: _buildListWidget(),
       floatingActionButton: new FloatingActionButton(
-        backgroundColor: Colors.cyanAccent,
+        backgroundColor: FunColors.themeColor,
         tooltip: "jump to publish",
         onPressed: (){
           showSimpleSnackbar("跳转发布界面");
@@ -412,7 +413,7 @@ class HomeState extends LoadMoreState<HomePresenter, HomePage>
         child: new RichText(
           text: new TextSpan(
             text: topicName,
-            style: new TextStyle(color: Colors.cyanAccent),
+            style: new TextStyle(color: FunColors.themeColor),
             recognizer: recognizer,
             children: [
               new TextSpan(
@@ -472,7 +473,8 @@ class HomeState extends LoadMoreState<HomePresenter, HomePage>
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         new Expanded(
-            child: new OutlineButton.icon(
+            child:
+            new OutlineButton.icon(
           onPressed: () {
             //TODO 跳转到search界面
           },

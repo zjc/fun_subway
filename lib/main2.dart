@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
-import 'package:fun_subway/pages/splash.dart';
-import 'package:fun_subway/pages/home.dart';
+import 'package:fun_subway/pages/SplashPage.dart';
+import 'package:fun_subway/pages/HomePage.dart';
 
 
 class MyApp extends StatelessWidget {
@@ -9,7 +9,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return new MaterialApp(
       title: 'Flutter app',
-      home: new Splash(),
+      home: new SplashPage(),
       routes: {'/HomePage': (BuildContext context) => new HomePage()},
     );
   }

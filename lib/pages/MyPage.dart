@@ -3,6 +3,8 @@ import 'package:fun_subway/business/beans/LoginBean.dart';
 import 'package:fun_subway/framework/BaseState.dart';
 import 'package:fun_subway/business/p/MyPresenter.dart';
 import 'package:fun_subway/business/view/MyView.dart';
+import 'package:fun_subway/utils/FunColors.dart';
+import 'package:fun_subway/utils/FunRouteFactory.dart';
 
 class MyPage extends StatefulWidget {
   @override
@@ -27,7 +29,7 @@ class MyState extends BaseState<MyPresenter, MyPage> implements MyView {
     var countTextStyle = new TextStyle(
         fontSize: 20.0,
         fontWeight: FontWeight.bold,
-        color: new Color(0xff333333));
+        color: FunColors.c_333);
     var widget = new Row(
       children: <Widget>[
         new InkWell(
@@ -138,7 +140,7 @@ class MyState extends BaseState<MyPresenter, MyPage> implements MyView {
   Widget _buildUnLoginWidget() {
     var widget = new InkWell(
       onTap: () {
-        //TODO go2Login
+        FunRouteFactory.go2LoginPage(context);
       },
       child: new Row(
         children: <Widget>[
@@ -194,7 +196,7 @@ class MyState extends BaseState<MyPresenter, MyPage> implements MyView {
           ),
           new Text(
             name,
-            style: new TextStyle(color: new Color(0xff333333), fontSize: 16.0),
+            style: new TextStyle(color: FunColors.c_333, fontSize: 16.0),
           ),
         ],
       ),
@@ -232,7 +234,7 @@ class MyState extends BaseState<MyPresenter, MyPage> implements MyView {
                         child: new Text(
                           name,
                           style: new TextStyle(
-                              color: new Color(0xff333333), fontSize: 16.0),
+                              color: FunColors.c_333, fontSize: 16.0),
                         ),
                       )
                     ],
@@ -277,6 +279,7 @@ class MyState extends BaseState<MyPresenter, MyPage> implements MyView {
       case Menu.ITEM_TYPE_ABOUT:
         return _buildCommonItem("ic_mine_about", "关于");
     }
+    return _buildSpace();
   }
 
   @override

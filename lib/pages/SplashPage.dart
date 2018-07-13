@@ -5,14 +5,14 @@ import 'package:fun_subway/business/view/SplashView.dart';
 import 'package:fun_subway/business/p/SplashPresenter.dart';
 import 'package:fun_subway/framework/BaseState.dart';
 
-class Splash extends StatefulWidget {
+class SplashPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     return _SplashPageState();
   }
 }
 
-class _SplashPageState extends BaseState<SplashPresenter, Splash>
+class _SplashPageState extends BaseState<SplashPresenter, SplashPage>
     implements SplashView {
   @override
   Widget build(BuildContext context) {

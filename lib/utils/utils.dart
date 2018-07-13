@@ -28,6 +28,14 @@ class TextUtils {
     }
     return false;
   }
+
+  static isPhoneNum(String str){
+    if(isEmpty(str)){
+      return false;
+    }
+    RegExp mobile = new RegExp(r"(0|86)?(1)[0-9]{10}");
+    return mobile.hasMatch(str);
+  }
 }
 
 class SharedPreferenceUtils {
