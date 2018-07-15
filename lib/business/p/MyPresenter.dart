@@ -9,11 +9,11 @@ class MyPresenter extends BasePresenter<MyView, MyModel> {
     return new MyModel();
   }
 
-  List<Menu> getMenus(){
+  List<Menu> getMenus() {
     List<Menu> menus = [];
-    if(model.isLogin()) {
+    if (model.isLogin()) {
       menus.add(new Menu(Menu.ITEM_TYPE_LOGIN));
-    }else{
+    } else {
       menus.add(new Menu(Menu.ITEM_TYPE_UN_LOGIN));
     }
     menus.add(new Menu(Menu.ITEM_TYPE_FUNCTION));
@@ -25,16 +25,16 @@ class MyPresenter extends BasePresenter<MyView, MyModel> {
     return menus;
   }
 
-  void setLoginBean(LoginBean loginBean){
+  void setLoginBean(LoginBean loginBean) {
     model.setLoginBean(loginBean);
   }
 
-  LoginBean getLoginBean(){
+  LoginBean getLoginBean() {
     return model.getLoginBean();
   }
 }
 
-class Menu{
+class Menu {
   static const ITEM_TYPE_LOGIN = 1;
   static const ITEM_TYPE_UN_LOGIN = 2;
   static const ITEM_TYPE_FUNCTION = 3;
@@ -47,5 +47,4 @@ class Menu{
   final int type;
 
   Menu(this.type);
-
 }

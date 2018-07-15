@@ -1,4 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:fun_subway/business/beans/LoginBean.dart';
+import 'package:fun_subway/business/beans/UserBean.dart';
 import 'package:fun_subway/business/p/LoginPresenter.dart';
 import 'package:fun_subway/business/view/LoginView.dart';
 import 'package:fun_subway/framework/BaseState.dart';
@@ -31,17 +35,25 @@ class LoginState extends BaseState<LoginPresenter, LoginPage>
     return null;
   }
 
+  String _validatePwd(String value) {
+    return _validateEmpty(value, "请输入密码");
+  }
+
   String _validateVerificationCode(String value) {
+    return _validateEmpty(value, "请输入短信验证码");
+  }
+
+  String _validateEmpty(String value, String tips) {
     if (TextUtils.isEmpty(value)) {
-      return "请输入正确的验证码";
+      return tips;
     }
     return null;
   }
 
   final TextEditingController _AccountController = new TextEditingController();
+  final TextEditingController _PwdController = new TextEditingController();
   final TextEditingController _VerificationCodeController =
       new TextEditingController();
-  final TextEditingController _PwdController = new TextEditingController();
 
   bool isAccountEmpty = true;
   bool isValidateCodeEmpty = true;
@@ -102,12 +114,12 @@ class LoginState extends BaseState<LoginPresenter, LoginPage>
         child: new TextFormField(
           style: new TextStyle(fontSize: 16.0, color: FunColors.c_333),
           keyboardType: TextInputType.text,
-          validator: _validateAccount,
+          validator: _validatePwd,
           onSaved: (String value) {
             loginData.password = value;
           },
           obscureText: !showPassword,
-          controller: _AccountController,
+          controller: _PwdController,
           decoration: InputDecoration(
               hintText: "请输入密码",
               hintStyle: new TextStyle(color: Colors.black54),
@@ -172,17 +184,17 @@ class LoginState extends BaseState<LoginPresenter, LoginPage>
             padding: EdgeInsets.only(left: 5.0),
             child: new OutlineButton(
               child: new Text(
-                "获取验证码",
+                _verifyStr,
                 style: new TextStyle(color: FunColors.c_666, fontSize: 14.0),
               ),
               onPressed: () {
                 String phone = _AccountController.text;
-                if(TextUtils.isEmpty(phone)){
-                  showSimpleSnackbar("手机号不能为空");
+                if (TextUtils.isEmpty(phone)) {
+                  showToast("手机号不能为空!");
                   return;
                 }
                 //设置倒计时
-
+                _startCountDown();
                 mPresenter.fetchVerifyCode(phone);
               },
             ),
@@ -190,6 +202,33 @@ class LoginState extends BaseState<LoginPresenter, LoginPage>
         ],
       ),
     );
+  }
+
+  int _seconds = 0;
+  Timer _timer;
+
+  String _verifyStr = '获取验证码';
+
+  void _startCountDown() {
+    _seconds = 10;
+
+    _timer = new Timer.periodic(new Duration(seconds: 1), (timer) {
+      if (_seconds == 0) {
+        _cancelTimer();
+        return;
+      }
+
+      _seconds--;
+      _verifyStr = '$_seconds(s)';
+      setState(() {});
+      if (_seconds == 0) {
+        _verifyStr = '重新发送';
+      }
+    });
+  }
+
+  _cancelTimer() {
+    _timer?.cancel();
   }
 
   Widget _buildLoginModel() {
@@ -236,23 +275,19 @@ class LoginState extends BaseState<LoginPresenter, LoginPage>
         iconTheme: new IconThemeData(color: Colors.black87),
         elevation: 0.0,
       ),
-      body: new SafeArea(
-        left: false,
-        right: false,
-        child: new Container(
-          padding: EdgeInsets.only(left: 25.0, right: 25.0),
-          child: new Form(
-            key: _LoginKey,
-            autovalidate: false,
-            child: new Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                _buildAccountRow(),
-                _buildSecondRow(),
-                _buildLoginButton(),
-                _buildLoginModel(),
-              ],
-            ),
+      body: new Container(
+        padding: EdgeInsets.only(left: 25.0, right: 25.0,top: 35.0),
+        child: new Form(
+          key: _LoginKey,
+          autovalidate: false,
+          child: new Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              _buildAccountRow(),
+              _buildSecondRow(),
+              _buildLoginButton(),
+              _buildLoginModel(),
+            ],
           ),
         ),
       ),
@@ -270,5 +305,21 @@ class LoginState extends BaseState<LoginPresenter, LoginPage>
   @override
   LoginPresenter newInstance() {
     return LoginPresenter();
+  }
+
+  @override
+  void loginByMessageCodeUnregisterCallBack(UserBean userBean) {}
+
+  @override
+  void loginByThirdPartUnregisterCallBack(UserBean userBean) {}
+
+  @override
+  void loginSuccess(LoginBean loginBean) {
+    Navigator.of(context).pop(loginBean);
+  }
+
+  @override
+  void sendVerifyCodeSuccess() {
+    showToast("短信验证码发送成功，请注意查收！");
   }
 }

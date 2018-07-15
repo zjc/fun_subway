@@ -59,26 +59,30 @@ class CommentBean extends BaseBean {
       this.commentImgs});
 
   factory CommentBean.fromJson(Map<String, dynamic> json) {
-    return CommentBean(
-      profilePicture: json["profilePicture"],
-      targetId: json["targetId"],
-      imageUrls: json["imageUrls"],
-      nickname: json["nickname"],
-      likeCount: json["likeCount"],
-      likeStatus: json["likeStatus"],
-      id: json["id"],
-      postId: json["postId"],
-      gmtCreate: json["gmtCreate"],
-      userId: json["userId"],
-      content: json["content"],
-      replyCount: json["replyCount"],
-      lastReplyNickname: json["lastReplyNickname"],
-      lastReplyUserId: json["lastReplyUserId"],
-      replyNickname: json["replyNickname"],
-      replyUserId: json["replyUserId"],
-      commentCode: json["commentCode"],
-      commentImgs: ImageBean.instanceImageBeans(json["commentImgs"]),
-    );
+    if(json != null && json.isNotEmpty){
+      return CommentBean(
+        profilePicture: json["profilePicture"],
+        targetId: json["targetId"],
+        imageUrls: json["imageUrls"],
+        nickname: json["nickname"],
+        likeCount: json["likeCount"],
+        likeStatus: json["likeStatus"],
+        id: json["id"],
+        postId: json["postId"],
+        gmtCreate: json["gmtCreate"],
+        userId: json["userId"],
+        content: json["content"],
+        replyCount: json["replyCount"],
+        lastReplyNickname: json["lastReplyNickname"],
+        lastReplyUserId: json["lastReplyUserId"],
+        replyNickname: json["replyNickname"],
+        replyUserId: json["replyUserId"],
+        commentCode: json["commentCode"],
+        commentImgs: ImageBean.instanceImageBeans(json["commentImgs"]),
+      );
+    }
+    return null;
+
   }
 
   Map<String,dynamic> toJson()=>{

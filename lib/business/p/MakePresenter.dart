@@ -7,4 +7,12 @@ class MakePresenter extends BasePresenter<MakeView, MakeModel> {
   MakeModel newInstance() {
     return new MakeModel();
   }
+
+  void fetchData() {
+    model.fetchMakeMenu().then((responseBean) {
+      if (responseBean.isSuccess()) {
+        getView()?.callback(responseBean.data);
+      }
+    });
+  }
 }

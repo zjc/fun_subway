@@ -15,8 +15,11 @@ abstract class BaseModel {
     String newUrl = operateUrl(Api.BASE_URL + partUrl, headerMap);
     final response = await http.get(newUrl, headers: headerMap);
     try {
+
       if (response.statusCode == 200) {
-        return json.decode(response.body.toString());
+        String result = response.body.toString();
+        print("request url:"+newUrl+";response data:"+result);
+        return json.decode(result);
       } else {
         throw new Exception("failed to get data " + (response.body.toString()));
       }

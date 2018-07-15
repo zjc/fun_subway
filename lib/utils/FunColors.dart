@@ -10,4 +10,8 @@ class FunColors{
   static const Color c_666 = const Color(0xff666666);
 
   static const Color c_999 = const Color(0xff999999);
+
+  static const Color c_eee = const Color(0xffeeeeee);
+  
+  static const Color lineColor = c_eee;
 }

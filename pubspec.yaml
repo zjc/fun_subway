@@ -59,6 +59,8 @@ flutter:
     - images/ic_mine_about.png
     - images/ic_setting.png
     - images/bg_user_center.png
+    - images/ic_mine_male.png
+    - images/ic_mine_female.png
 
 
   # To add assets to your application, add an assets section, like this:

@@ -16,6 +16,17 @@ class HomeBanner extends BaseBean with BannerEntity {
         'url': url,
       };
 
+  static List<HomeBanner> instanceHomeBanners(List list){
+    List<HomeBanner> homeBanners;
+    if (list != null && list.isNotEmpty) {
+      homeBanners = list.map((map) {
+        return HomeBanner.fromJson(map);
+      }).toList();
+    }
+    return homeBanners;
+
+  }
+
   @override
   get bannerAction => url;
 

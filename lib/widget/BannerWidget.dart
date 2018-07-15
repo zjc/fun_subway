@@ -13,14 +13,14 @@ class BannerWidget extends StatefulWidget {
   final OnBannerPress bannerPress;
   final Build build;
   final List<BannerEntity> entities; //数据源
-  final int height; //高度
+  final double height; //高度
   final int delayTime; //时间(毫秒)
   final int duration; //PageView切换速度(毫秒)
 
   BannerWidget(
       {Key key,
       @required this.entities,
-      this.height = 180,
+      this.height = 180.0,
       this.delayTime = 500,
       this.duration = 500,
       this.bannerPress,
@@ -62,7 +62,7 @@ class _BannerState extends State<BannerWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: widget.height.toDouble(),
+      height: widget.height,
       color: Colors.black12,
       child: Stack(
         children: <Widget>[

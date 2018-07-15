@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:convert/convert.dart';
+import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 import 'package:crypto/crypto.dart' as crypto;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -21,6 +22,22 @@ class Utils {
   }
 }
 
+class UIUtils {
+  static double getScreenWidth(BuildContext context) {
+    return MediaQuery.of(context).size.width;
+  }
+
+  static double getScreenHeight(BuildContext context) {
+    return MediaQuery.of(context).size.height;
+  }
+}
+
+class Math{
+  static int min(int a, int b) {
+    return (a <= b) ? a : b;
+  }
+}
+
 class TextUtils {
   static isEmpty(String str) {
     if (str == null || str.isEmpty || "" == str.trim()) {
@@ -29,8 +46,8 @@ class TextUtils {
     return false;
   }
 
-  static isPhoneNum(String str){
-    if(isEmpty(str)){
+  static isPhoneNum(String str) {
+    if (isEmpty(str)) {
       return false;
     }
     RegExp mobile = new RegExp(r"(0|86)?(1)[0-9]{10}");

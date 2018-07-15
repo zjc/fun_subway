@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:collection';
+import 'package:fun_subway/business/constants/Constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:fun_subway/utils/utils.dart';
@@ -9,20 +10,20 @@ class EncryptionController {
   Future<RequestStuff> handle(
       String partUrl, Map<String, Object> params) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String uuid = prefs.get("uuid");
+    String uuid = prefs.get(Constants.UUID);
     if (uuid == null || uuid.isEmpty) {
       uuid = DeviceInfo.getUUID();
-      prefs.setString("uuid", uuid);
+      prefs.setString(Constants.UUID, uuid);
     }
 
     var st = new SplayTreeMap<String, Object>();
-    st["appSecret"] = "biaoqing51_android_!@#\$";
+//    st["appSecret"] = Constants.APP_SECRET;
     st["deviceToken"] = uuid;
     st["timestamp"] = DateTime.now().millisecondsSinceEpoch;
     st["url"] = partUrl;
     st["version"] = "2.0.4";
 
-    String userId = prefs.getString("userId");
+    String userId = prefs.getString(Constants.USER_ID);
     if (userId != null && userId.isNotEmpty) {
       st["userId"] = userId;
     }
@@ -51,7 +52,7 @@ class EncryptionController {
 
     requestStuff.addHeader("appKey", "android");
     requestStuff.addHeader("token", encryptedToken);
-    String apiToken = prefs.getString("api_token");
+    String apiToken = prefs.getString(Constants.API_TOKEN);
     if (apiToken == null || apiToken.isEmpty) {
       requestStuff.addHeader("atoken", encryptedToken);
     } else {

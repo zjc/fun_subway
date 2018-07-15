@@ -10,6 +10,6 @@ class ResponseBean<T> {
       {this.code, this.data, this.error_code, this.error_reason});
 
   bool isSuccess() {
-    return !TextUtils.isEmpty(code) && "0000" == code;
+    return !TextUtils.isEmpty(code) && "00000" == code;
   }
 }

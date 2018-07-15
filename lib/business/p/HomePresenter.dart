@@ -18,7 +18,7 @@ class HomePresenter extends BasePresenter<HomeView, HomeModel> {
   static const int ITEM_TYPE_HOME_BANNER = 1; //首页banner图
   static const int ITEM_TYPE_HOME_HOT_TAGS = 2; //热门标签
   static const int ITEM_TYPE_HOME_TOPIC = 3; //话题
-  static const int ITEM_TYPE_HOME_LAST_VIEWD = 4; //上次观看到这里
+  static const int ITEM_TYPE_HOME_LAST_VIEWED = 4; //上次观看到这里
   static const int ITEM_TYPE_HOME_POST = 5; //动态内容
 
   List<Pair> mDataSource = [];
@@ -33,14 +33,14 @@ class HomePresenter extends BasePresenter<HomeView, HomeModel> {
     fetchFeedList(1, pageSize);
   }
 
-  void loadMore(){
+  void loadMore() {
     fetchFeedList(homeFeedBean.page + 1, pageSize);
   }
 
   void fetchFeedList(int pageNum, int pageSize) {
     model.fetchFeedList(pageNum, pageSize).then((bean) {
       homeFeedBean = bean.data;
-      if(homeFeedBean != null){
+      if (homeFeedBean != null) {
         if (pageNum == 1) {
           if (homeFeedBean.posts != null && homeFeedBean.posts.isNotEmpty) {
             showSimpleSnackbar(
@@ -50,17 +50,22 @@ class HomePresenter extends BasePresenter<HomeView, HomeModel> {
           updateHomeData();
           updateLastViewed();
           addHotTopic();
-        }else{
-          if(homeFeedBean.posts != null && homeFeedBean.posts.isNotEmpty){
+        } else {
+          if (homeFeedBean.posts != null && homeFeedBean.posts.isNotEmpty) {
             List<Pair> postPairs = createPostPairs(homeFeedBean.posts);
             mDataSource.addAll(postPairs);
           }
         }
 
-        if(getView() != null){
+        if (getView() != null) {
           getView().callback(mDataSource);
         }
       }
+    }, onError: (exception) {
+      print("===========>");
+      print(exception);
+      print("===========>");
+      getView().showError();
     });
   }
 
@@ -112,7 +117,7 @@ class HomePresenter extends BasePresenter<HomeView, HomeModel> {
   }
 
   Pair<int, Object> lastViewedPair =
-      new Pair(ITEM_TYPE_HOME_LAST_VIEWD, new Object());
+      new Pair(ITEM_TYPE_HOME_LAST_VIEWED, new Object());
 
   void updateLastViewed() {
     mDataSource.remove(lastViewedPair);

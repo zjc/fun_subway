@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:fun_subway/utils/FunColors.dart';
 import 'package:fun_subway/utils/utils.dart';
 import 'BaseView.dart';
 import 'BasePresenter.dart';
@@ -6,6 +8,20 @@ import 'BasePresenter.dart';
 abstract class BaseState<PRESENTER extends BasePresenter,
         STATEFUL_WIDGET extends StatefulWidget> extends State<STATEFUL_WIDGET>
     implements BaseView {
+  static const _platform =
+      const MethodChannel('com.fun.framework.plugins/toast');
+
+  void showToast(String message) {
+    try {
+      //调用相应方法，并传入相关参数。
+      if (_platform != null) {
+        _platform.invokeMethod('showShortToast', {'message': message});
+      }
+    } catch (exception) {
+      print(exception);
+    }
+  }
+
   PRESENTER mPresenter;
 
   @override
@@ -33,8 +49,8 @@ abstract class BaseState<PRESENTER extends BasePresenter,
     );
   }
 
-  void showSimpleSnackbar(String desc){
-    showSnackbar(desc,null,null);
+  void showSimpleSnackbar(String desc) {
+    showSnackbar(desc, null, null);
   }
 
   @override
@@ -60,6 +76,8 @@ abstract class BaseState<PRESENTER extends BasePresenter,
   Widget buildRetry(String error, VoidCallback v) {
     return new Center(
       child: new Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           new Image.asset(
             "images/ic_nonetwork.png",
@@ -67,8 +85,11 @@ abstract class BaseState<PRESENTER extends BasePresenter,
             height: 140.0,
             fit: BoxFit.cover,
           ),
-          new Text(error,
-              style: new TextStyle(color: Colors.black87, fontSize: 14.0)),
+          new Padding(
+            padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+            child: new Text(error,
+                style: new TextStyle(color: Colors.black87, fontSize: 14.0)),
+          ),
           new OutlineButton.icon(
               onPressed: v,
               shape: new RoundedRectangleBorder(
@@ -80,6 +101,26 @@ abstract class BaseState<PRESENTER extends BasePresenter,
               ))
         ],
       ),
+    );
+  }
+
+  Widget buildDivider(double height) {
+    return new Container(
+      color: Color.fromARGB(255, 244, 244, 244),
+      height: height,
+    );
+  }
+
+  PreferredSizeWidget defaultSimpleAppBar(String title) {
+    return new AppBar(
+      title: new Text(
+        title,
+        style: new TextStyle(color: FunColors.c_333, fontSize: 18.0),
+      ),
+      centerTitle: true,
+      backgroundColor: Colors.white,
+      elevation: 0.0,
+      iconTheme: new IconThemeData(color: Colors.black87),
     );
   }
 }

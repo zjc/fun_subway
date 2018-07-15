@@ -34,7 +34,7 @@ class HomeState extends LoadMoreState<HomePresenter, HomePage>
       floatingActionButton: new FloatingActionButton(
         backgroundColor: FunColors.themeColor,
         tooltip: "jump to publish",
-        onPressed: (){
+        onPressed: () {
           showSimpleSnackbar("跳转发布界面");
         },
         child: new Icon(Icons.add),
@@ -72,6 +72,14 @@ class HomeState extends LoadMoreState<HomePresenter, HomePage>
     return widget;
   }
 
+  @override
+  Widget showError() {
+    setState(() {
+      _isShowRetry = true;
+    });
+    return null;
+  }
+
   Widget _buildItem(BuildContext context, int index) {
     final pair = _datasource[index];
     Widget widget;
@@ -86,7 +94,7 @@ class HomeState extends LoadMoreState<HomePresenter, HomePage>
       case HomePresenter.ITEM_TYPE_HOME_TOPIC:
         widget = _buildTopicWidget(pair);
         break;
-      case HomePresenter.ITEM_TYPE_HOME_LAST_VIEWD:
+      case HomePresenter.ITEM_TYPE_HOME_LAST_VIEWED:
         widget = _buildLastViewed(pair);
         break;
       case HomePresenter.ITEM_TYPE_HOME_POST:
@@ -97,6 +105,7 @@ class HomeState extends LoadMoreState<HomePresenter, HomePage>
   }
 
   void refreshData() {
+    print("refreshData-------------------------------------------------------------->>>>>");
     mPresenter.fetchHomeData();
   }
 
@@ -131,13 +140,6 @@ class HomeState extends LoadMoreState<HomePresenter, HomePage>
           )
         ],
       ),
-    );
-  }
-
-  Widget _buildDivider() {
-    return new Container(
-      color: Color.fromARGB(255, 244, 244, 244),
-      height: 10.0,
     );
   }
 
@@ -340,8 +342,7 @@ class HomeState extends LoadMoreState<HomePresenter, HomePage>
           mainAxisSpacing: 3.0,
           crossAxisSpacing: 3.0,
           children: postImages.map((ImageBean imagebean) {
-            Size size =
-                PostBean.getDisplaySize(context, postImages.length, imagebean);
+            Size size = PostBean.getDisplaySize(context, postImages.length, imagebean);
             String displayUrl =
                 ImageBean.getDisplayUrl(isNetworkAvailable, isWifi, imagebean);
             return new InkWell(
@@ -444,7 +445,7 @@ class HomeState extends LoadMoreState<HomePresenter, HomePage>
       child: new Column(
         children: <Widget>[
           //分割线
-          _buildDivider(),
+          buildDivider(10.0),
           new Container(
             padding: EdgeInsets.only(left: 10.0, right: 10.0),
             child: new Column(
@@ -473,8 +474,7 @@ class HomeState extends LoadMoreState<HomePresenter, HomePage>
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         new Expanded(
-            child:
-            new OutlineButton.icon(
+            child: new OutlineButton.icon(
           onPressed: () {
             //TODO 跳转到search界面
           },
@@ -675,7 +675,8 @@ class HomeState extends LoadMoreState<HomePresenter, HomePage>
 
   @override
   void callback(List<Pair> pairs) {
-    this._datasource = pairs;
-    setState(() {});
+    setState(() {
+      this._datasource = pairs;
+    });
   }
 }
