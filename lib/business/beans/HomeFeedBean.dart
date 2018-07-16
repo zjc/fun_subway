@@ -27,11 +27,7 @@ class HomeFeedBean extends BaseBean {
   static HomeFeedBean _instanceHomeBean(Map<String, dynamic> dataMap) {
     List<HomeBanner> homeBanners = HomeBanner.instanceHomeBanners(dataMap["banners"]);
 
-    List<String> hotTags;
-    List hotTagList = dataMap["hotTags"];
-    if (hotTagList != null && hotTagList.isNotEmpty) {
-      hotTags = hotTagList.cast<String>();
-    }
+    List<String> hotTags = BaseBean.instanceStringList(dataMap["hotTags"]);
 
     List<PostBean> postBeans;
     List posts = dataMap["posts"];

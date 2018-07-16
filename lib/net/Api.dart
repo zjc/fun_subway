@@ -13,4 +13,12 @@ class Api{
 
   static const String MAKE_MENU = "make/menu";//相册制图配置
 
+  static const String HOT_SEARCH = "tag/search";//热门搜索
+
+  static const String TOPIC_LIST = "topic/data";//热门话题
+
+  static const String SEARCH_ASSOCIATION = "tag/similar";//联想词
+
+  static const String SEARCH_RESULT_LIST = "image/list";//搜索结果列表
+
 }

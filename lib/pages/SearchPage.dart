@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fun_subway/business/beans/SearchResult.dart';
 import 'package:fun_subway/business/p/SearchPresenter.dart';
 import 'package:fun_subway/business/view/SearchView.dart';
 import 'package:fun_subway/framework/BaseState.dart';
@@ -19,11 +20,17 @@ class SearchPage extends StatefulWidget {
 
 class SearchState extends BaseState<SearchPresenter, SearchPage>
     implements SearchView {
+  List<String> _hotWords;
+
+  List<String> _hotTopics;
+
   @override
   void initState() {
     super.initState();
+    mPresenter.setSearchWords(widget.searchWords);
     mTextEditingController =
         new TextEditingController(text: widget.searchWords);
+    mPresenter.loadData();
   }
 
   @override
@@ -53,24 +60,67 @@ class SearchState extends BaseState<SearchPresenter, SearchPage>
     }
   }
 
+
   Widget _buildHotSearch() {
-    return new Container(
-      padding: EdgeInsets.all(15.0),
-      child: new Column(
-        children: <Widget>[
-          new Container(
-            child: new Text("热门搜索"),
-            padding: EdgeInsets.only(
-              bottom: 15.0
-            ),
-          ),
-        ],
+    return new ListTile(
+      title: new Padding(
+        padding: const EdgeInsets.only(top: 16.0, bottom: 15.0),
+        child: new Text("热门搜索", textAlign: TextAlign.start),
       ),
+      subtitle: (_hotWords == null || _hotWords.isEmpty)
+          ? new Center(
+              child: new Padding(
+                padding: EdgeInsets.all(8.0),
+                child: new Text("暂无热词"),
+              ),
+            )
+          : new Wrap(
+              children: _hotWords.map((value) {
+                return new Padding(
+                  padding: EdgeInsets.all(4.0),
+                  child: new ActionChip(
+                    label: new Text(value),
+                    onPressed: () {
+                      //TODO 检索关键字
+                    },
+                  ),
+                );
+              }).toList(),
+            ),
     );
   }
 
   Widget _buildHotTopic() {
-    return new Column();
+    return new ListTile(
+      title: new Padding(
+        padding: const EdgeInsets.only(top: 16.0, bottom: 15.0),
+        child: new Text("热门话题", textAlign: TextAlign.start),
+      ),
+      subtitle: (_hotTopics == null || _hotTopics.isEmpty)
+          ? new Center(
+              child: new Padding(
+                padding: EdgeInsets.all(8.0),
+                child: new Text("暂无话题"),
+              ),
+            )
+          : GridView.count(
+              crossAxisCount: 2,
+              mainAxisSpacing: 3.0,
+              crossAxisSpacing: 3.0,
+              childAspectRatio: 4.0,
+              controller: new ScrollController(),
+              shrinkWrap: true,
+              children: _hotTopics.map((value) {
+                return new InkWell(onTap: (){
+                  //TODO jump to topic
+                  print("value:"+value);
+                },child: new Container(
+                  padding: EdgeInsets.all(10.0),
+                  child: new Text("#" + value + "#"),
+                ),);
+              }).toList(),
+            ),
+    );
   }
 
   TextEditingController mTextEditingController;
@@ -116,5 +166,29 @@ class SearchState extends BaseState<SearchPresenter, SearchPage>
   @override
   SearchPresenter newInstance() {
     return new SearchPresenter();
+  }
+
+  @override
+  void getAssociationTags(List<String> tags) {
+    // TODO: implement getAssociationTags
+  }
+
+  @override
+  void getSearchResult(List<SearchResult> searchResults) {
+    // TODO: implement getSearchResult
+  }
+
+  @override
+  void getHotTopics(List<String> topics) {
+    setState(() {
+      _hotTopics = topics;
+    });
+  }
+
+  @override
+  void getHotWords(List<String> words) {
+    setState(() {
+      _hotWords = words;
+    });
   }
 }
