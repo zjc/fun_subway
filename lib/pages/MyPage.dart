@@ -29,7 +29,6 @@ class MyState extends BaseState<MyPresenter, MyPage> implements MyView {
   @override
   void initState() {
     super.initState();
-    print("======================================================>>mypage initState");
     mPresenter.setLoginBean(FunAuth().mLoginBean);
   }
 

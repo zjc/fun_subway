@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fun_subway/business/beans/CommentBean.dart';
 import 'package:fun_subway/business/beans/HomeBanner.dart';
 import 'package:fun_subway/business/beans/ImageBean.dart';
 import 'package:fun_subway/business/beans/PostBean.dart';
@@ -105,11 +106,10 @@ class HomeState extends LoadMoreState<HomePresenter, HomePage>
   }
 
   void refreshData() {
-    print("refreshData-------------------------------------------------------------->>>>>");
     mPresenter.fetchHomeData();
   }
 
-  Widget _buildPostAvatar(PostBean postBean) {
+  Widget _buildPostAvatar(PostBean postBean, Pair pair) {
     return new Container(
       height: 52.0,
       padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
@@ -132,11 +132,19 @@ class HomeState extends LoadMoreState<HomePresenter, HomePage>
               )
             ],
           ),
-          new Image.asset(
-            "images/ic_usercenter_delete_the_post.png",
-            width: 22.0,
-            height: 16.0,
-            fit: BoxFit.cover,
+          new InkWell(
+            onTap: () {
+              setState(() {
+                _datasource.remove(pair);
+                showToast("删除成功,下次我们会减少该内容的推荐");
+              });
+            },
+            child: new Image.asset(
+              "images/ic_usercenter_delete_the_post.png",
+              width: 22.0,
+              height: 16.0,
+              fit: BoxFit.cover,
+            ),
           )
         ],
       ),
@@ -219,28 +227,35 @@ class HomeState extends LoadMoreState<HomePresenter, HomePage>
               ),
             ),
           ),
-          new GridView.count(
-            crossAxisCount: 3,
-            shrinkWrap: true,
-            primary: true,
-            physics: ScrollPhysics(),
-            mainAxisSpacing: 5.0,
-            crossAxisSpacing: 5.0,
-            children: commentBean.commentImgs.map((ImageBean imageBean) {
-              String displayUrl = ImageBean.getDisplayUrl(
-                  isNetworkAvailable, isWifi, imageBean);
-              double itemWidth = (MediaQuery.of(context).size.width - 60) / 3;
-              return new InkWell(
-                onTap: () {
-                  FunRouteFactory.go2ImagePreview(
-                      context, imageBean, commentBean.commentImgs);
-                },
-                child: _buildCardImageItem(displayUrl, itemWidth, itemWidth),
-              );
-            }).toList(),
-          )
+          _buildCommentImages(commentBean),
         ],
       ),
+    );
+  }
+
+  Widget _buildCommentImages(CommentBean commentBean) {
+    if (commentBean.commentImgs == null || commentBean.commentImgs.isEmpty) {
+      return new Container();
+    }
+    return new GridView.count(
+      crossAxisCount: 3,
+      shrinkWrap: true,
+      primary: true,
+      physics: ScrollPhysics(),
+      mainAxisSpacing: 5.0,
+      crossAxisSpacing: 5.0,
+      children: commentBean.commentImgs.map((ImageBean imageBean) {
+        String displayUrl =
+            ImageBean.getDisplayUrl(isNetworkAvailable, isWifi, imageBean);
+        double itemWidth = (MediaQuery.of(context).size.width - 60) / 3;
+        return new InkWell(
+          onTap: () {
+            FunRouteFactory.go2ImagePreview(
+                context, imageBean, commentBean.commentImgs);
+          },
+          child: _buildCardImageItem(displayUrl, itemWidth, itemWidth),
+        );
+      }).toList(),
     );
   }
 
@@ -250,22 +265,27 @@ class HomeState extends LoadMoreState<HomePresenter, HomePage>
       child: new Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          new Row(
-            children: <Widget>[
-              new Image.asset(
-                "images/ic_home_share.png",
-                width: 19.0,
-                height: 17.0,
-                fit: BoxFit.cover,
-              ),
-              new Padding(
-                padding: EdgeInsets.only(left: 6.0),
-                child: new Text(
-                  "分享",
-                  style: new TextStyle(color: Color(0xff666666)),
+          new InkWell(
+            onTap: () {
+              showShareBottomSheet(context);
+            },
+            child: new Row(
+              children: <Widget>[
+                new Image.asset(
+                  "images/ic_home_share.png",
+                  width: 19.0,
+                  height: 17.0,
+                  fit: BoxFit.cover,
                 ),
-              ),
-            ],
+                new Padding(
+                  padding: EdgeInsets.only(left: 6.0),
+                  child: new Text(
+                    "分享",
+                    style: new TextStyle(color: Color(0xff666666)),
+                  ),
+                ),
+              ],
+            ),
           ),
           new Row(
             children: <Widget>[
@@ -329,8 +349,9 @@ class HomeState extends LoadMoreState<HomePresenter, HomePage>
   Widget _buildPostImage(PostBean postBean) {
     List<Widget> widgets = []; //表情控件
 
-    List<ImageBean> postImages =
-        postBean.show ? postBean.showImgs : postBean.memeImgs;
+    List<ImageBean> postImages = (postBean.show != null && postBean.show)
+        ? postBean.showImgs
+        : postBean.memeImgs;
     int count = PostBean.getColumnCount(postImages.length);
     widgets.add(new Container(
         padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
@@ -342,7 +363,8 @@ class HomeState extends LoadMoreState<HomePresenter, HomePage>
           mainAxisSpacing: 3.0,
           crossAxisSpacing: 3.0,
           children: postImages.map((ImageBean imagebean) {
-            Size size = PostBean.getDisplaySize(context, postImages.length, imagebean);
+            Size size =
+                PostBean.getDisplaySize(context, postImages.length, imagebean);
             String displayUrl =
                 ImageBean.getDisplayUrl(isNetworkAvailable, isWifi, imagebean);
             return new InkWell(
@@ -355,11 +377,14 @@ class HomeState extends LoadMoreState<HomePresenter, HomePage>
         )));
 
     //添加表情包
-    if (postBean.show &&
+    if (postBean.show != null &&
+        postBean.show &&
         postBean.memeImgs != null &&
         postBean.memeImgs.isNotEmpty) {
       widgets.add(new Container(
-        height: 70.0,
+        height: 80.0,
+        alignment: Alignment.centerLeft,
+        padding: EdgeInsets.only(bottom: 10.0),
         child: ListView.builder(
           shrinkWrap: true,
           primary: true,
@@ -451,7 +476,7 @@ class HomeState extends LoadMoreState<HomePresenter, HomePage>
             child: new Column(
               children: <Widget>[
                 //头部容器
-                _buildPostAvatar(postBean),
+                _buildPostAvatar(postBean, pair),
                 //帖子文本
                 _buildPostText(postBean),
                 //图片展示
@@ -476,7 +501,7 @@ class HomeState extends LoadMoreState<HomePresenter, HomePage>
         new Expanded(
             child: new OutlineButton.icon(
           onPressed: () {
-            //TODO 跳转到search界面
+            FunRouteFactory.go2SearchPage(context, null);
           },
           shape: new RoundedRectangleBorder(
               borderRadius: new BorderRadius.circular(20.0)),
@@ -612,6 +637,12 @@ class HomeState extends LoadMoreState<HomePresenter, HomePage>
       child: new InkWell(
         onTap: () {
           refreshData();
+          //滚动到顶部
+          _scrollController.animateTo(
+            0.0,
+            curve: Curves.easeOut,
+            duration: const Duration(milliseconds: 300),
+          );
         },
         child: new Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -652,13 +683,19 @@ class HomeState extends LoadMoreState<HomePresenter, HomePage>
                 scrollDirection: Axis.horizontal,
                 itemCount: hotTags.length,
                 itemBuilder: (context, index) {
-                  return new Container(
-                    alignment: Alignment.center,
-                    padding: EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
-                    child: new Text(
-                      '${hotTags[index]}',
-                      style:
-                          new TextStyle(color: Colors.black54, fontSize: 14.0),
+                  String hot = hotTags[index];
+                  return new InkWell(
+                    onTap: () {
+                      FunRouteFactory.go2SearchPage(context, hot);
+                    },
+                    child: new Container(
+                      alignment: Alignment.center,
+                      padding: EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
+                      child: new Text(
+                        hot,
+                        style: new TextStyle(
+                            color: Colors.black54, fontSize: 14.0),
+                      ),
                     ),
                   );
                 }),

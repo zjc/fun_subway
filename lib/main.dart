@@ -19,11 +19,12 @@ class MyApp extends StatelessWidget {
       theme: new ThemeData(
           primaryColor: FunColors.themeColor,
           accentColor: FunColors.themeColor,
-
+          bottomAppBarColor:Colors.white,
           inputDecorationTheme: new InputDecorationTheme(
             border: new UnderlineInputBorder(
-                borderSide: new BorderSide(color: FunColors.themeColor,width: 1.0)),
-          )
+                borderSide: new BorderSide(color: FunColors.c_666,width: 0.5)),
+          ),
+          hintColor: FunColors.c_999,
       ),
       routes: {
         '/MainPage': (BuildContext context) => new MainPage(),

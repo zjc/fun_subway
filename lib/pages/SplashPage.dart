@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fun_subway/business/view/SplashView.dart';
 import 'package:fun_subway/business/p/SplashPresenter.dart';
 import 'package:fun_subway/framework/BaseState.dart';
+import 'package:fun_subway/utils/FunRouteFactory.dart';
 
 class SplashPage extends StatefulWidget {
   @override
@@ -41,7 +42,7 @@ class _SplashPageState extends BaseState<SplashPresenter, SplashPage>
   }
 
   void go2MainPage() {
-    Navigator.of(context).pushReplacementNamed('/MainPage');
+    FunRouteFactory.go2MainPage(context);
   }
 
   @override

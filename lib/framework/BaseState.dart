@@ -22,6 +22,25 @@ abstract class BaseState<PRESENTER extends BasePresenter,
     }
   }
 
+  void showShareBottomSheet(BuildContext context){
+    showModalBottomSheet<void>(context: context, builder: (BuildContext context) {
+      return new Container(
+          child: new Padding(
+              padding: const EdgeInsets.all(32.0),
+              child: new Text('This is the modal bottom sheet. Click anywhere to dismiss.',
+                  textAlign: TextAlign.center,
+                  style: new TextStyle(
+                      color: Theme.of(context).accentColor,
+                      fontSize: 24.0
+                  )
+              )
+          )
+      );
+    });
+  }
+
+
+
   PRESENTER mPresenter;
 
   @override

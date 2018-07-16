@@ -95,7 +95,7 @@ class MakeState extends BaseState<MakePresenter, MakePage> implements MakeView {
                           makeOptionBean.icon,
                           width: 85.0,
                           height: 100.0,
-                          fit: BoxFit.cover,
+                          fit: BoxFit.contain,
                         ),
                         new Text(
                           makeOptionBean.optionName,
