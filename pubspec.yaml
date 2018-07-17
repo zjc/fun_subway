@@ -14,6 +14,7 @@ dependencies:
   uuid: 1.0.0
   shared_preferences: ^0.4.2
   transparent_image: ^0.1.0
+  flutter_webview_plugin: "^0.1.6"
 dev_dependencies:
   flutter_test:
     sdk: flutter

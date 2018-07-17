@@ -1,0 +1,1 @@
+rm ~/soft/work/flutter/bin/cache/lockfile

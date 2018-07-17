@@ -4,22 +4,24 @@ import 'package:flutter/material.dart';
 import 'package:fun_subway/business/beans/ImageBean.dart';
 import 'package:fun_subway/business/beans/LoginBean.dart';
 import 'package:fun_subway/business/p/SearchPresenter.dart';
+import 'package:fun_subway/pages/AboutPage.dart';
 import 'package:fun_subway/pages/ImagePreviewPage.dart';
 import 'package:fun_subway/pages/LoginPage.dart';
 import 'package:fun_subway/pages/MainPage.dart';
 import 'package:fun_subway/pages/SearchPage.dart';
 import 'package:fun_subway/pages/SettingPage.dart';
+import 'package:fun_subway/pages/WebViewPage.dart';
 
 class FunRouteFactory {
   static void go2MainPage(BuildContext context) {
-    Navigator.of(context).push(new PageRouteBuilder(
+    Navigator.of(context).pushAndRemoveUntil(new PageRouteBuilder(
         opaque: false,
         pageBuilder: (BuildContext context, _, __) {
           return MainPage();
         },
         transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
           return enterFromRight(animation, child);
-        }));
+        }),(route) => route == null);
   }
 
   static void go2ImagePreview(
@@ -70,6 +72,29 @@ class FunRouteFactory {
         },
         transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
           return enterByAlphaTransaction(animation, child);
+        }));
+  }
+
+  static void go2WebViewPage(BuildContext context,String title,String url){
+    Navigator.of(context).push(new PageRouteBuilder(
+        opaque: false,
+        pageBuilder: (BuildContext context, _, __) {
+          return WebViewPage(title: title,url: url,);
+        },
+        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+          return enterFromRight(animation, child);
+        }));
+  }
+
+
+  static void go2AboutPage(BuildContext context){
+    Navigator.of(context).push(new PageRouteBuilder(
+        opaque: false,
+        pageBuilder: (BuildContext context, _, __) {
+          return AboutPage();
+        },
+        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+          return enterFromRight(animation, child);
         }));
   }
 

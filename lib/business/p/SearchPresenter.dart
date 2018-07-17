@@ -31,6 +31,10 @@ class SearchPresenter extends BasePresenter<SearchView, SearchModel> {
     this.searchWords = words;
   }
 
+  void loadMore() {
+    fetchSearchResultByPage(inputText, mSearchResult.page + 1);
+  }
+
   void loadData() {
     if (TextUtils.isEmpty(searchWords)) {
       fetHotSearch();
@@ -75,8 +79,16 @@ class SearchPresenter extends BasePresenter<SearchView, SearchModel> {
   SearchResult mSearchResult;
 
   void fetchSearchResult(String searchWords) {
+    fetchSearchResultByPage(searchWords, 1);
+  }
+
+  int pageSize = 30;
+
+  void fetchSearchResultByPage(String searchWords, int pageNum) {
     this.inputText = searchWords;
-    model.fetchSearchResult(searchWords, 1, 30).then((responseBean) {
+    model
+        .fetchSearchResult(searchWords, pageNum, pageSize)
+        .then((responseBean) {
       if (responseBean.isSuccess()) {
         mSearchResult = responseBean.data;
         getView()?.getSearchResult(mSearchResult, mSearchResult.rows);
@@ -87,7 +99,7 @@ class SearchPresenter extends BasePresenter<SearchView, SearchModel> {
   void fetchSearchResultWithoutCheck(String searchWords) {
     this.inputText = searchWords;
     model
-        .fetchSearchResultByCheck(searchWords, 1, 30, false)
+        .fetchSearchResultByCheck(searchWords, 1, pageSize, false)
         .then((responseBean) {});
   }
 

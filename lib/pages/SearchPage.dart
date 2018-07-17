@@ -34,17 +34,33 @@ class SearchState extends BaseState<SearchPresenter, SearchPage>
 
   SearchResult _searchResult;
 
+  bool isFocus = false;
+
+  String inputText;
+
   TextEditingController mTextEditingController;
 
-  bool isFocus = false;
+  ScrollController _scrollController;
 
   FocusNode focusNode;
 
-  String inputText;
+  void _scrollListener() {
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
+      mPresenter.loadMore();
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _scrollController.removeListener(_scrollListener);
+  }
 
   @override
   void initState() {
     super.initState();
+    _scrollController = new ScrollController()..addListener(_scrollListener);
     focusNode = new FocusNode();
     focusNode.addListener(onFocusChangeListener);
     inputText = widget.searchWords;
@@ -143,6 +159,7 @@ class SearchState extends BaseState<SearchPresenter, SearchPage>
 
         return new ListView(
           scrollDirection: Axis.vertical,
+          controller: _scrollController,
           padding: EdgeInsets.only(left: 5.0, right: 5.0),
           children: widgets,
         );
@@ -309,7 +326,6 @@ class SearchState extends BaseState<SearchPresenter, SearchPage>
   void getAssociationTags(List<String> tags) {
     setState(() {
       this._associationTags = tags;
-
     });
   }
 
@@ -320,7 +336,11 @@ class SearchState extends BaseState<SearchPresenter, SearchPage>
       if (searchResults.page == 1) {
         _imageBeans.clear();
       }
-      _imageBeans.addAll(imageBeans);
+      if (imageBeans != null && imageBeans.isNotEmpty) {
+        _imageBeans.addAll(imageBeans);
+      } else {
+        showToast("没有更多数据显示");
+      }
     });
   }
 

@@ -160,9 +160,7 @@ class MyState extends BaseState<MyPresenter, MyPage> implements MyView {
                   FunRouteFactory.go2SettingPage(context).then((value) {
                     if (!TextUtils.isEmpty(value) && "loginOut" == value) {
                       mPresenter.setLoginBean(null);
-                      setState(() {
-
-                      });
+                      setState(() {});
                     }
                   });
                 },
@@ -319,13 +317,34 @@ class MyState extends BaseState<MyPresenter, MyPage> implements MyView {
       case Menu.ITEM_TYPE_SPACE:
         return buildDivider(10.0);
       case Menu.ITEM_TYPE_FEEDBACK:
-        return _buildCommonItem("ic_mine_feedback", "意见反馈");
+        return new InkWell(
+          child: _buildCommonItem("ic_mine_feedback", "意见反馈"),
+          onTap: () {
+            FunRouteFactory.go2WebViewPage(
+                context, "意见反馈", "https://support.qq.com/product/21024");
+          },
+        );
       case Menu.ITEM_TYPE_SHARE:
-        return _buildCommonItem("ic_mine_share", "分享app");
+        return new InkWell(
+          child: _buildCommonItem("ic_mine_share", "分享app"),
+          onTap: () {
+            showShareBottomSheet(context);
+          },
+        );
       case Menu.ITEM_TYPE_CHECK_UPDATE:
-        return _buildCommonItem("ic_mine_update", "检查更新");
+        return new InkWell(
+          child: _buildCommonItem("ic_mine_update", "检查更新"),
+          onTap: () {
+            showToast("暂无版本更新");
+          },
+        );
       case Menu.ITEM_TYPE_ABOUT:
-        return _buildCommonItem("ic_mine_about", "关于");
+        return new InkWell(
+          onTap: () {
+            FunRouteFactory.go2AboutPage(context);
+          },
+          child: _buildCommonItem("ic_mine_about", "关于"),
+        );
     }
     return buildDivider(10.0);
   }
