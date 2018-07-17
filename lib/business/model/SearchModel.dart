@@ -34,7 +34,7 @@ class SearchModel extends BaseModel {
   }
 
   Future<ResponseBean<AssociationTagBean>> fetchAssociation(String tag) async {
-    Map<String, Object> params = {"pageSize": "10"};
+    Map<String, Object> params = {"tag": tag};
     try {
       Map<String, dynamic> map = await get(Api.SEARCH_ASSOCIATION, params);
       AssociationTagBean bean = AssociationTagBean.fromJson(map["data"]);

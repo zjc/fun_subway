@@ -8,6 +8,11 @@ import 'BasePresenter.dart';
 abstract class BaseState<PRESENTER extends BasePresenter,
         STATEFUL_WIDGET extends StatefulWidget> extends State<STATEFUL_WIDGET>
     implements BaseView {
+
+  //用于图片的显示方式
+  bool isNetworkAvailable = true;
+  bool isWifi = true;
+
   static const _platform =
       const MethodChannel('com.fun.framework.plugins/toast');
 
@@ -140,6 +145,20 @@ abstract class BaseState<PRESENTER extends BasePresenter,
       backgroundColor: Colors.white,
       elevation: 0.0,
       iconTheme: new IconThemeData(color: Colors.black87),
+    );
+  }
+
+
+  Widget buildCardImageItem(String displayUrl, double width, double height) {
+    return new Card(
+      shape: new RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(3.0))),
+      child: new Image.network(
+        displayUrl,
+        fit: BoxFit.cover,
+        width: width,
+        height: height,
+      ),
     );
   }
 }

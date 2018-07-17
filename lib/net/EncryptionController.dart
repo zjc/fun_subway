@@ -31,7 +31,7 @@ class EncryptionController {
     //将请求参数提取，进行一同加密
     if (params != null && params.isNotEmpty) {
       for (var key in params.keys) {
-        st[key] = params[key];
+        st[key] = Uri.encodeQueryComponent(params[key].toString());
       }
     }
 

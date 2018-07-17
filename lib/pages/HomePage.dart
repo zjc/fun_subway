@@ -253,7 +253,7 @@ class HomeState extends LoadMoreState<HomePresenter, HomePage>
             FunRouteFactory.go2ImagePreview(
                 context, imageBean, commentBean.commentImgs);
           },
-          child: _buildCardImageItem(displayUrl, itemWidth, itemWidth),
+          child: buildCardImageItem(displayUrl, itemWidth, itemWidth),
         );
       }).toList(),
     );
@@ -330,22 +330,6 @@ class HomeState extends LoadMoreState<HomePresenter, HomePage>
     );
   }
 
-  Widget _buildCardImageItem(String displayUrl, double width, double height) {
-    return new Card(
-      shape: new RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(3.0))),
-      child: new Image.network(
-        displayUrl,
-        fit: BoxFit.cover,
-        width: width,
-        height: height,
-      ),
-    );
-  }
-
-  bool isNetworkAvailable = true;
-  bool isWifi = true;
-
   Widget _buildPostImage(PostBean postBean) {
     List<Widget> widgets = []; //表情控件
 
@@ -371,7 +355,7 @@ class HomeState extends LoadMoreState<HomePresenter, HomePage>
               onTap: () {
                 FunRouteFactory.go2ImagePreview(context, imagebean, postImages);
               },
-              child: _buildCardImageItem(displayUrl, size.width, size.height),
+              child: buildCardImageItem(displayUrl, size.width, size.height),
             );
           }).toList(),
         )));
@@ -399,7 +383,7 @@ class HomeState extends LoadMoreState<HomePresenter, HomePage>
                 FunRouteFactory.go2ImagePreview(
                     context, imageBean, postBean.memeImgs);
               },
-              child: _buildCardImageItem(displayUrl, 65.0, 65.0),
+              child: buildCardImageItem(displayUrl, 65.0, 65.0),
             );
           },
         ),

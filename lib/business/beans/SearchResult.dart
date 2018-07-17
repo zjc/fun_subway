@@ -1,5 +1,6 @@
 import 'package:fun_subway/business/beans/BaseBean.dart';
 import 'package:fun_subway/business/beans/ImageBean.dart';
+import 'package:fun_subway/utils/utils.dart';
 
 class SearchResult extends BaseBean {
   final int total;

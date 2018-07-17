@@ -32,7 +32,7 @@ class UIUtils {
   }
 }
 
-class Math{
+class Math {
   static int min(int a, int b) {
     return (a <= b) ? a : b;
   }
@@ -44,6 +44,10 @@ class TextUtils {
       return true;
     }
     return false;
+  }
+
+  static equals(String value1, String value2) {
+    return value1 == value2;
   }
 
   static isPhoneNum(String str) {

@@ -1,3 +1,6 @@
+import 'dart:ui';
+
+import 'package:flutter/material.dart';
 import 'package:fun_subway/business/beans/BaseBean.dart';
 import 'package:fun_subway/business/beans/ImageOptionsBean.dart';
 import 'package:fun_subway/business/model/ImageTypeFactory.dart';

@@ -103,6 +103,7 @@ class PostBean extends BaseBean {
     return 3;
   }
 
+
   static Size getDisplaySize(
       BuildContext context, int imageCount, ImageBean imageBean) {
     double displayWidth = MediaQuery.of(context).size.width - 20;
