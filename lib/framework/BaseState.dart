@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fun_subway/utils/FunColors.dart';
 import 'package:fun_subway/utils/utils.dart';
+import 'package:fun_subway/widget/CardImageItem.dart';
 import 'BaseView.dart';
 import 'BasePresenter.dart';
 
@@ -148,15 +149,6 @@ abstract class BaseState<PRESENTER extends BasePresenter,
 
 
   Widget buildCardImageItem(String displayUrl, double width, double height) {
-    return new Card(
-      shape: new RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(3.0))),
-      child: new Image.network(
-        displayUrl,
-        fit: BoxFit.cover,
-        width: width,
-        height: height,
-      ),
-    );
+    return new CardImageItem(displayUrl,width,height);
   }
 }

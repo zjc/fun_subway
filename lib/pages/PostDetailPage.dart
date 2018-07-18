@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:fun_subway/business/beans/CommentBean.dart';
+import 'package:fun_subway/business/beans/ImageBean.dart';
 import 'package:fun_subway/business/beans/PostBean.dart';
 import 'package:fun_subway/business/p/PostDetailPresenter.dart';
 import 'package:fun_subway/business/view/PostDetailView.dart';
 import 'package:fun_subway/framework/BaseState.dart';
 import 'package:fun_subway/framework/LoadMoreState.dart';
 import 'package:fun_subway/utils/FunColors.dart';
+import 'package:fun_subway/utils/FunRouteFactory.dart';
 import 'package:fun_subway/utils/Pair.dart';
+import 'package:fun_subway/utils/utils.dart';
+import 'package:fun_subway/widget/CommentImageWidget.dart';
+import 'package:fun_subway/widget/CommentLikeWidget.dart';
 import 'package:fun_subway/widget/PostWidget.dart';
 
 class PostDetailPage extends StatefulWidget {
@@ -80,12 +86,74 @@ class PostDetailState extends LoadMoreState<PostDetailPresenter, PostDetailPage>
           child: new Text("全部评论"),
         );
       case PostDetailPresenter.ITEM_TYPE_COMMENT:
-        return new Text("评论item");
+        CommentBean commentBean = pair.second;
+        return _buildCommentWidget(commentBean);
       case PostDetailPresenter.ITEM_TYPE_COMMENT_EMPTY:
         return new Text("评论为空显示");
       default:
         return new Text("评论为空显示");
     }
+  }
+
+  Widget _buildCommentWidget(CommentBean commentBean) {
+    return new Container(
+      padding: EdgeInsets.all(15.0),
+      child: new Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          new ClipOval(
+            child: new FadeInImage.assetNetwork(
+              image: '${commentBean.profilePicture}',
+              width: 32.0,
+              height: 32.0,
+              placeholder: "images/ic_default_head.png",
+            ),
+          ),
+          new Expanded(
+              child: new Container(
+            margin: EdgeInsets.only(left: 15.0),
+            child: new Column(
+              children: <Widget>[
+                new Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    new Text(
+                      commentBean.nickname,
+                      style:
+                          new TextStyle(color: FunColors.c_666, fontSize: 15.0),
+                    ),
+                    new InkWell(
+                      onTap: () {
+                        //TODO 点击评论的爱心
+                      },
+                      child: new CommentLikeWidget(
+                          commentBean.likeCount, commentBean.likeStatus),
+                    )
+                  ],
+                ),
+                new Container(
+                  alignment: Alignment.centerLeft,
+                  padding: EdgeInsets.only(top: 5.0, bottom: 5.0),
+                  child: new Text(
+                    TextUtils.isEmpty(commentBean.content)
+                        ? "分享图片"
+                        : commentBean.content,
+                    style:
+                        new TextStyle(color: FunColors.c_333, fontSize: 16.0),
+                  ),
+                ),
+                new CommentImageWidget(
+                  commentBean,
+                  50,
+                  isNetworkAvailable: isNetworkAvailable,
+                  isWifi: isWifi,
+                ),
+              ],
+            ),
+          )),
+        ],
+      ),
+    );
   }
 
   Widget _buildInputWidget() {
@@ -133,5 +201,9 @@ class PostDetailState extends LoadMoreState<PostDetailPresenter, PostDetailPage>
   }
 
   @override
-  void refreshData() {}
+  void fetchCallback(List<Pair> pairs) {
+    setState(() {
+      _dataSources = pairs;
+    });
+  }
 }

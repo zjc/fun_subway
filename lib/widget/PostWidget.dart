@@ -9,6 +9,8 @@ import 'package:fun_subway/utils/FunColors.dart';
 import 'package:fun_subway/utils/utils.dart';
 import 'package:flutter/gestures.dart';
 import 'package:fun_subway/utils/FunRouteFactory.dart';
+import 'package:fun_subway/widget/CommentImageWidget.dart';
+import 'package:fun_subway/widget/CommentLikeWidget.dart';
 
 typedef void DeletePostCallback(PostBean postBean);
 
@@ -102,30 +104,8 @@ class PostState extends BaseState<PostPresenter, PostWidget>
                   )
                 ],
               ),
-              new Row(
-                children: <Widget>[
-                  new Text(
-                    '${commentBean.likeCount}',
-                    style: new TextStyle(
-                      fontSize: 14.0,
-                      color: new Color(0xff999999),
-                    ),
-                  ),
-                  new Padding(
-                    padding: EdgeInsets.only(left: 5.0, right: 5.0),
-                    child: new Image.asset(
-                      '${
-                          commentBean.likeStatus
-                              ? "images/ic_home_like2.png"
-                              : "images/ic_home_unlike2.png"
-                      }',
-                      width: 14.0,
-                      height: 12.0,
-                      fit: BoxFit.cover,
-                    ),
-                  )
-                ],
-              )
+              new CommentLikeWidget(
+                  commentBean.likeCount, commentBean.likeStatus),
             ],
           ),
           new Container(
@@ -139,35 +119,14 @@ class PostState extends BaseState<PostPresenter, PostWidget>
               ),
             ),
           ),
-          _buildCommentImages(commentBean),
+          new CommentImageWidget(
+            commentBean,
+            60,
+            isNetworkAvailable: isNetworkAvailable,
+            isWifi: isWifi,
+          ),
         ],
       ),
-    );
-  }
-
-  Widget _buildCommentImages(CommentBean commentBean) {
-    if (commentBean.commentImgs == null || commentBean.commentImgs.isEmpty) {
-      return new Container();
-    }
-    return new GridView.count(
-      crossAxisCount: 3,
-      shrinkWrap: true,
-      primary: true,
-      physics: ScrollPhysics(),
-      mainAxisSpacing: 5.0,
-      crossAxisSpacing: 5.0,
-      children: commentBean.commentImgs.map((ImageBean imageBean) {
-        String displayUrl =
-            ImageBean.getDisplayUrl(isNetworkAvailable, isWifi, imageBean);
-        double itemWidth = (MediaQuery.of(context).size.width - 60) / 3;
-        return new InkWell(
-          onTap: () {
-            FunRouteFactory.go2ImagePreview(
-                context, imageBean, commentBean.commentImgs);
-          },
-          child: buildCardImageItem(displayUrl, itemWidth, itemWidth),
-        );
-      }).toList(),
     );
   }
 

@@ -16,12 +16,11 @@ class SearchBloc {
         .debounce(const Duration(milliseconds: 250))
         .switchMap<SearchState>((String term) {
           Stream<SearchState> stream = _search(term, presenter);
-          print("search....." + stream.toString());
           return stream;
         })
         .startWith(SearchNoTerm())
         .onErrorResume((error) {
-          print("rxdart on Error resume"+error.toString());
+          print("rxdart on Error resume" + error.toString());
         });
     return SearchBloc._(onTextChanged, state);
   }
@@ -34,7 +33,6 @@ class SearchBloc {
 
   static Stream<SearchState> _search(
       String term, SearchPresenter presenter) async* {
-    print("search term------------------>" + term);
     if (term.isEmpty) {
       yield SearchNoTerm();
     } else {

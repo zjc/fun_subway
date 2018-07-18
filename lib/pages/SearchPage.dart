@@ -84,7 +84,6 @@ class SearchPageState extends LoadMoreState<SearchPresenter, SearchPage>
   }
 
   Widget _buildBody(SearchState searchState) {
-    print("=============>" + searchState.toString());
     if (searchState is SearchNoTerm || isComplete) {
       if (TextUtils.isEmpty(inputText)) {
         return new ListView(
