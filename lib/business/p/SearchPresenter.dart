@@ -1,11 +1,16 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:fun_subway/business/beans/AssociationTagBean.dart';
+import 'package:fun_subway/business/beans/ResponseBean.dart';
 import 'package:fun_subway/business/beans/SearchResult.dart';
 import 'package:fun_subway/business/view/SearchView.dart';
 import 'package:fun_subway/business/model/SearchModel.dart';
 import 'package:fun_subway/framework/BasePresenter.dart';
+import 'package:fun_subway/framework/LoadMorePresenter.dart';
 import 'package:fun_subway/utils/utils.dart';
 
-class SearchPresenter extends BasePresenter<SearchView, SearchModel> {
+class SearchPresenter extends LoadMorePresenter<SearchView, SearchModel> {
   static const int SEARCH_HEAD = 1;
 
   static const int SEARCH = 2;
@@ -31,6 +36,7 @@ class SearchPresenter extends BasePresenter<SearchView, SearchModel> {
     this.searchWords = words;
   }
 
+  @override
   void loadMore() {
     fetchSearchResultByPage(inputText, mSearchResult.page + 1);
   }
@@ -105,7 +111,12 @@ class SearchPresenter extends BasePresenter<SearchView, SearchModel> {
 
   void fetchAssociation(String inputText) {
     model.fetchAssociation(inputText).then((responseBean) {
-      getView()?.getAssociationTags(responseBean.data.tags);
+//      getView()?.getAssociationTags(responseBean.data.tags);
     });
+  }
+
+  Future<AssociationTagBean> fetchAssociationByInputText(String inputText) async{
+    ResponseBean<AssociationTagBean> responseBean = await model.fetchAssociation(inputText);
+    return responseBean.data;
   }
 }

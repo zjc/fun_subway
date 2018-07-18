@@ -8,20 +8,24 @@ import 'package:fun_subway/pages/AboutPage.dart';
 import 'package:fun_subway/pages/ImagePreviewPage.dart';
 import 'package:fun_subway/pages/LoginPage.dart';
 import 'package:fun_subway/pages/MainPage.dart';
+import 'package:fun_subway/pages/PostDetailPage.dart';
 import 'package:fun_subway/pages/SearchPage.dart';
 import 'package:fun_subway/pages/SettingPage.dart';
 import 'package:fun_subway/pages/WebViewPage.dart';
 
 class FunRouteFactory {
   static void go2MainPage(BuildContext context) {
-    Navigator.of(context).pushAndRemoveUntil(new PageRouteBuilder(
-        opaque: false,
-        pageBuilder: (BuildContext context, _, __) {
-          return MainPage();
-        },
-        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
-          return enterFromRight(animation, child);
-        }),(route) => route == null);
+    Navigator.of(context).pushAndRemoveUntil(
+        new PageRouteBuilder(
+            opaque: false,
+            pageBuilder: (BuildContext context, _, __) {
+              return MainPage();
+            },
+            transitionsBuilder:
+                (_, Animation<double> animation, __, Widget child) {
+              return enterFromRight(animation, child);
+            }),
+        (route) => route == null);
   }
 
   static void go2ImagePreview(
@@ -75,19 +79,32 @@ class FunRouteFactory {
         }));
   }
 
-  static void go2WebViewPage(BuildContext context,String title,String url){
+  static void go2WebViewPage(BuildContext context, String title, String url) {
     Navigator.of(context).push(new PageRouteBuilder(
         opaque: false,
         pageBuilder: (BuildContext context, _, __) {
-          return WebViewPage(title: title,url: url,);
+          return WebViewPage(
+            title: title,
+            url: url,
+          );
         },
         transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
           return enterFromRight(animation, child);
         }));
   }
 
+  static void go2PostDetail(BuildContext context, int postId) {
+    Navigator.of(context).push(new PageRouteBuilder(
+        opaque: false,
+        pageBuilder: (BuildContext context, _, __) {
+          return PostDetailPage(postId);
+        },
+        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+          return enterFromRight(animation, child);
+        }));
+  }
 
-  static void go2AboutPage(BuildContext context){
+  static void go2AboutPage(BuildContext context) {
     Navigator.of(context).push(new PageRouteBuilder(
         opaque: false,
         pageBuilder: (BuildContext context, _, __) {
@@ -99,7 +116,7 @@ class FunRouteFactory {
   }
 
   //直接在当前界面进行渐变显示
-  static enterByAlphaTransaction(Animation<double> animation, Widget child){
+  static enterByAlphaTransaction(Animation<double> animation, Widget child) {
     return new FadeTransition(
       opacity: animation,
       child: new FadeTransition(

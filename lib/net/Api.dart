@@ -21,4 +21,8 @@ class Api{
 
   static const String SEARCH_RESULT_LIST = "image/list";//搜索结果列表
 
+  static const String POST_DETAIL = "post/info";
+
+  static const String COMMENT = "comment/info";
+
 }

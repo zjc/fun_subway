@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:fun_subway/business/beans/ImageBean.dart';
-import 'package:fun_subway/business/beans/PostBean.dart';
 import 'package:fun_subway/business/beans/SearchResult.dart';
 import 'package:fun_subway/business/p/SearchPresenter.dart';
 import 'package:fun_subway/business/view/SearchView.dart';
-import 'package:fun_subway/framework/BaseState.dart';
+import 'package:fun_subway/framework/LoadMoreState.dart';
 import 'package:fun_subway/utils/FunColors.dart';
 import 'package:fun_subway/utils/FunRouteFactory.dart';
-import 'package:fun_subway/utils/Pair.dart';
+import 'package:fun_subway/utils/SearchBloc.dart';
+import 'package:fun_subway/utils/SearchState.dart';
 import 'package:fun_subway/utils/utils.dart';
 
 class SearchPage extends StatefulWidget {
@@ -18,49 +18,32 @@ class SearchPage extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return SearchState();
+    return SearchPageState();
   }
 }
 
-class SearchState extends BaseState<SearchPresenter, SearchPage>
+class SearchPageState extends LoadMoreState<SearchPresenter, SearchPage>
     implements SearchView {
   List<String> _hotWords;
 
   List<String> _hotTopics;
 
-  List<String> _associationTags;
-
   List<ImageBean> _imageBeans = [];
 
   SearchResult _searchResult;
 
-  bool isFocus = false;
-
   String inputText;
-
-  TextEditingController mTextEditingController;
-
-  ScrollController _scrollController;
 
   FocusNode focusNode;
 
-  void _scrollListener() {
-    if (_scrollController.position.pixels ==
-        _scrollController.position.maxScrollExtent) {
-      mPresenter.loadMore();
-    }
-  }
+  SearchBloc bloc;
 
-  @override
-  void dispose() {
-    super.dispose();
-    _scrollController.removeListener(_scrollListener);
-  }
+  bool isComplete = false;
 
   @override
   void initState() {
     super.initState();
-    _scrollController = new ScrollController()..addListener(_scrollListener);
+    bloc = SearchBloc(mPresenter);
     focusNode = new FocusNode();
     focusNode.addListener(onFocusChangeListener);
     inputText = widget.searchWords;
@@ -69,53 +52,40 @@ class SearchState extends BaseState<SearchPresenter, SearchPage>
   }
 
   void onFocusChangeListener() {
-    isFocus = focusNode?.hasFocus;
+    bool isFocus = focusNode?.hasFocus;
     print("isFocus:" + isFocus.toString());
   }
 
-  void onTextChangeListener() {
-    String nowText = mTextEditingController?.text;
-    if (!TextUtils.isEmpty(nowText) && !TextUtils.equals(inputText, nowText)) {
-      inputText = nowText;
-      //delay 200ms 请求网络，如果正在请求取消
-      mPresenter.fetchAssociation(inputText);
-    }
+  @override
+  void dispose() {
+    super.dispose();
+    bloc.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
-        title: _buildSearchWidget(),
-        automaticallyImplyLeading: false,
-        elevation: 0.0,
-        backgroundColor: Colors.white,
-      ),
-      body: _buildBody(),
+    return StreamBuilder<SearchState>(
+      stream: bloc.state,
+      initialData: SearchNoTerm(),
+      builder:
+          (BuildContext buildContext, AsyncSnapshot<SearchState> snapshot) {
+        final state = snapshot.data;
+        return new Scaffold(
+          appBar: new AppBar(
+            title: _buildSearchWidget(),
+            automaticallyImplyLeading: false,
+            elevation: 0.0,
+            backgroundColor: Colors.white,
+          ),
+          body: _buildBody(state),
+        );
+      },
     );
   }
 
-  Widget _buildBody() {
-    if (isFocus && !TextUtils.isEmpty(inputText)) {
-      if (_associationTags == null || _associationTags.isEmpty) {
-        return showLoading();
-      }
-      return new ListView.builder(
-          itemCount: _associationTags.length,
-          itemBuilder: (context, index) {
-            String text = _associationTags[index];
-            return new ListTile(
-              leading: new Icon(Icons.search),
-              title: new Text(text),
-              onTap: () {
-                focusNode.unfocus();
-                inputText = text;
-                mPresenter.setSearchWords(inputText);
-                mPresenter.fetchSearchResult(inputText);
-              },
-            );
-          });
-    } else {
+  Widget _buildBody(SearchState searchState) {
+    print("=============>" + searchState.toString());
+    if (searchState is SearchNoTerm || isComplete) {
       if (TextUtils.isEmpty(inputText)) {
         return new ListView(
           children: <Widget>[
@@ -128,12 +98,8 @@ class SearchState extends BaseState<SearchPresenter, SearchPage>
         if (_searchResult == null) {
           return showLoading();
         }
-
         List<Widget> widgets = [];
-        Widget searchHeader = buildSearchHeader(); //搜索到XXX的相关表情，一共有xxx个
-        if (searchHeader != null) {
-          widgets.add(searchHeader);
-        }
+        widgets.add(_buildSearchHeader()); //搜索到XXX的相关表情，一共有xxx个
         //添加9宫格图片列表
         widgets.add(GridView.count(
           crossAxisCount: 3,
@@ -159,17 +125,45 @@ class SearchState extends BaseState<SearchPresenter, SearchPage>
 
         return new ListView(
           scrollDirection: Axis.vertical,
-          controller: _scrollController,
+          controller: mScrollController,
           padding: EdgeInsets.only(left: 5.0, right: 5.0),
           children: widgets,
         );
       }
+    } else if (searchState is SearchPopulated) {
+      SearchPopulated searchPopulated = searchState;
+      return new ListView.builder(
+          itemCount: searchPopulated.result.length,
+          itemBuilder: (context, index) {
+            String text = searchPopulated.result[index];
+            return new ListTile(
+              leading: new Icon(Icons.search),
+              title: new Text(text),
+              onTap: () {
+                focusNode.unfocus();
+                inputText = text;
+                isComplete = true;
+                mPresenter.setSearchWords(inputText);
+                mPresenter.fetchSearchResult(inputText);
+              },
+            );
+          });
+    } else if (searchState is SearchLoading) {
+      return showLoading();
+    } else if (searchState is SearchEmpty) {
+      return new Text("未检索到<" + inputText + ">相关联的联想词语");
+    } else if (searchState is SearchError) {
+      return new Text("联想发生错误");
+    }else {
+      return new Container();
     }
   }
 
-  Widget buildSearchHeader() {
-    if (_searchResult.page == 1) {
-      return new Column(
+  Widget searchHeaderWidget;
+
+  Widget _buildSearchHeader() {
+    if (_searchResult.page == 1 && searchHeaderWidget == null) {
+      searchHeaderWidget = new Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           buildDivider(10.0),
@@ -198,7 +192,7 @@ class SearchState extends BaseState<SearchPresenter, SearchPage>
         ],
       );
     }
-    return null;
+    return searchHeaderWidget;
   }
 
   Widget _buildHotSearch() {
@@ -222,6 +216,7 @@ class SearchState extends BaseState<SearchPresenter, SearchPage>
                     label: new Text(value),
                     onPressed: () {
                       inputText = value;
+                      isComplete = true;
                       mPresenter.setSearchWords(value);
                       mPresenter.fetchSearchResult(value);
                     },
@@ -268,17 +263,7 @@ class SearchState extends BaseState<SearchPresenter, SearchPage>
     );
   }
 
-  void clearTextEditingController() {
-    if (mTextEditingController != null) {
-      mTextEditingController.removeListener(onTextChangeListener);
-      mTextEditingController = null;
-    }
-  }
-
   Widget _buildSearchWidget() {
-    clearTextEditingController();
-    mTextEditingController = new TextEditingController(text: inputText);
-    mTextEditingController.addListener(onTextChangeListener);
     return new Row(
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -292,7 +277,19 @@ class SearchState extends BaseState<SearchPresenter, SearchPage>
                 border: new Border.all(color: Colors.grey, width: 0.5)),
             child: new TextField(
                 focusNode: focusNode,
-                controller: mTextEditingController,
+                controller: new TextEditingController.fromValue(
+                    new TextEditingValue(
+                        text: TextUtils.isEmpty(inputText) ? "" : inputText,
+                        selection: new TextSelection.collapsed(
+                            offset: TextUtils.isEmpty(inputText)
+                                ? 0
+                                : inputText.length))),
+                onChanged: (val) {
+                  isComplete = false;
+                  inputText = val;
+                  print("======>onChanged:"+val);
+                  bloc.onTextChanged.add(val);
+                },
                 decoration: new InputDecoration(
                   border: InputBorder.none,
                   contentPadding:
@@ -320,13 +317,6 @@ class SearchState extends BaseState<SearchPresenter, SearchPage>
   @override
   SearchPresenter newInstance() {
     return new SearchPresenter();
-  }
-
-  @override
-  void getAssociationTags(List<String> tags) {
-    setState(() {
-      this._associationTags = tags;
-    });
   }
 
   @override

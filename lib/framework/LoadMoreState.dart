@@ -2,16 +2,29 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:fun_subway/framework/BasePresenter.dart';
+import 'package:fun_subway/framework/LoadMorePresenter.dart';
 import 'package:fun_subway/framework/LoadMoreView.dart';
 import 'BaseState.dart';
 
-abstract class LoadMoreState<PRESENTER extends BasePresenter,
+abstract class LoadMoreState<PRESENTER extends LoadMorePresenter,
         STATEFUL_WIDGET extends StatefulWidget>
     extends BaseState<PRESENTER, STATEFUL_WIDGET> implements LoadMoreView {
-  GlobalKey<RefreshIndicatorState> refreshIndicatorKey = new GlobalKey<RefreshIndicatorState>();
+  GlobalKey<RefreshIndicatorState> refreshIndicatorKey =
+      new GlobalKey<RefreshIndicatorState>();
+
+  ScrollController mScrollController;
+
   @override
   void initState() {
     super.initState();
+    mScrollController = new ScrollController()..addListener(_scrollListener);
+  }
+
+  void _scrollListener() {
+    if (mScrollController.position.pixels ==
+        mScrollController.position.maxScrollExtent) {
+      mPresenter.loadMore();
+    }
   }
 
   Future<Null> handleRefresh() {
@@ -25,8 +38,24 @@ abstract class LoadMoreState<PRESENTER extends BasePresenter,
     });
   }
 
-  //下拉刷新
-  void refreshData();
+  @override
+  void dispose() {
+    super.dispose();
+    mScrollController.removeListener(_scrollListener);
+    mScrollController = null;
+  }
+
+  //下拉刷新,子类有可能需要
+  void refreshData() {}
+
+
+  void scrollToTop() {
+    mScrollController.animateTo(
+      0.0,
+      curve: Curves.easeOut,
+      duration: const Duration(milliseconds: 300),
+    );
+  }
 
   @override
   void disableFooter() {

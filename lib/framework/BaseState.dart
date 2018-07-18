@@ -44,8 +44,6 @@ abstract class BaseState<PRESENTER extends BasePresenter,
     });
   }
 
-
-
   PRESENTER mPresenter;
 
   @override

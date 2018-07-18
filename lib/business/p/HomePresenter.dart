@@ -4,12 +4,13 @@ import 'package:fun_subway/business/beans/HomeBanner.dart';
 import 'package:fun_subway/business/beans/HomeFeedBean.dart';
 import 'package:fun_subway/business/beans/PostBean.dart';
 import 'package:fun_subway/business/beans/TopicBean.dart';
+import 'package:fun_subway/framework/LoadMorePresenter.dart';
 import 'package:fun_subway/utils/Pair.dart';
 import 'package:fun_subway/business/view/HomeView.dart';
 import 'package:fun_subway/business/model/HomeModel.dart';
 import 'package:fun_subway/framework/BasePresenter.dart';
 
-class HomePresenter extends BasePresenter<HomeView, HomeModel> {
+class HomePresenter extends LoadMorePresenter<HomeView, HomeModel> {
   @override
   HomeModel newInstance() {
     return new HomeModel();
