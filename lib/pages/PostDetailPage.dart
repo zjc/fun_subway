@@ -1,18 +1,19 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:fun_subway/business/beans/CommentBean.dart';
-import 'package:fun_subway/business/beans/ImageBean.dart';
 import 'package:fun_subway/business/beans/PostBean.dart';
 import 'package:fun_subway/business/p/PostDetailPresenter.dart';
 import 'package:fun_subway/business/view/PostDetailView.dart';
-import 'package:fun_subway/framework/BaseState.dart';
 import 'package:fun_subway/framework/LoadMoreState.dart';
 import 'package:fun_subway/utils/FunColors.dart';
-import 'package:fun_subway/utils/FunRouteFactory.dart';
 import 'package:fun_subway/utils/Pair.dart';
 import 'package:fun_subway/utils/utils.dart';
 import 'package:fun_subway/widget/CommentImageWidget.dart';
 import 'package:fun_subway/widget/CommentLikeWidget.dart';
 import 'package:fun_subway/widget/PostWidget.dart';
+import 'package:image_picker/image_picker.dart';
 
 class PostDetailPage extends StatefulWidget {
   int postId;
@@ -163,7 +164,7 @@ class PostDetailState extends LoadMoreState<PostDetailPresenter, PostDetailPage>
         children: <Widget>[
           new InkWell(
             onTap: () {
-              showToast("go2 select picture gallery....");
+              Future<File> _imageFile = ImagePicker.pickImage(source:ImageSource.gallery);
             },
             child: new Image.asset(
               "images/ic_post_detail_comment.png",

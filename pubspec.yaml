@@ -16,6 +16,7 @@ dependencies:
   transparent_image: ^0.1.0
   flutter_webview_plugin: "^0.1.6"
   rxdart: ^0.18.1
+  image_picker: "^0.4.5"
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -64,6 +65,11 @@ flutter:
     - images/ic_mine_male.png
     - images/ic_mine_female.png
     - images/ic_post_detail_comment.png
+    - images/ic_share_wechat.png
+    - images/ic_share_wx_friend.png
+    - images/ic_share_qq.png
+    - images/ic_share_qq_zone.png
+    - images/ic_share_weibo.png
 
 
   # To add assets to your application, add an assets section, like this:

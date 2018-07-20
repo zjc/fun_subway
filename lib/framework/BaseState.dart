@@ -3,46 +3,43 @@ import 'package:flutter/services.dart';
 import 'package:fun_subway/utils/FunColors.dart';
 import 'package:fun_subway/utils/utils.dart';
 import 'package:fun_subway/widget/CardImageItem.dart';
+import 'package:fun_subway/widget/share/ShareWidget.dart';
 import 'BaseView.dart';
 import 'BasePresenter.dart';
 
 abstract class BaseState<PRESENTER extends BasePresenter,
         STATEFUL_WIDGET extends StatefulWidget> extends State<STATEFUL_WIDGET>
     implements BaseView {
-
   //用于图片的显示方式
   bool isNetworkAvailable = true;
   bool isWifi = true;
 
-  static const _platform =
+  static const _toastPlatform =
       const MethodChannel('com.fun.framework.plugins/toast');
+
+  static const _netUtils = const MethodChannel("com.fun.framework.plugins/net");
 
   void showToast(String message) {
     try {
       //调用相应方法，并传入相关参数。
-      if (_platform != null) {
-        _platform.invokeMethod('showShortToast', {'message': message});
+      if (_toastPlatform != null) {
+        _toastPlatform.invokeMethod('showShortToast', {'message': message});
       }
     } catch (exception) {
       print(exception);
     }
   }
 
-  void showShareBottomSheet(BuildContext context){
-    showModalBottomSheet<void>(context: context, builder: (BuildContext context) {
-      return new Container(
-          child: new Padding(
-              padding: const EdgeInsets.all(32.0),
-              child: new Text('This is the modal bottom sheet. Click anywhere to dismiss.',
-                  textAlign: TextAlign.center,
-                  style: new TextStyle(
-                      color: Theme.of(context).accentColor,
-                      fontSize: 24.0
-                  )
-              )
-          )
-      );
-    });
+  void showShareBottomSheet(BuildContext context) {
+    showModalBottomSheet<void>(
+        context: context,
+        builder: (BuildContext context) {
+          return new Container(
+              child: new Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: new ShareWidget([]),
+          ));
+        });
   }
 
   PRESENTER mPresenter;
@@ -52,6 +49,16 @@ abstract class BaseState<PRESENTER extends BasePresenter,
     super.initState();
     mPresenter = newInstance();
     mPresenter.bindView(this);
+    initNetStatus();
+  }
+
+  void initNetStatus() async {
+    try {
+      isNetworkAvailable = await _netUtils.invokeMethod("isNetworkAvailable");
+      isWifi = await _netUtils.invokeMethod("isWifi");
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   PRESENTER newInstance();
@@ -134,7 +141,7 @@ abstract class BaseState<PRESENTER extends BasePresenter,
     );
   }
 
-  PreferredSizeWidget defaultSimpleAppBar(String title) {
+  PreferredSizeWidget defaultAppBar(String title, List<Widget> actions) {
     return new AppBar(
       title: new Text(
         title,
@@ -144,11 +151,15 @@ abstract class BaseState<PRESENTER extends BasePresenter,
       backgroundColor: Colors.white,
       elevation: 0.0,
       iconTheme: new IconThemeData(color: Colors.black87),
+      actions: actions,
     );
   }
 
+  PreferredSizeWidget defaultSimpleAppBar(String title) {
+    return defaultAppBar(title, []);
+  }
 
   Widget buildCardImageItem(String displayUrl, double width, double height) {
-    return new CardImageItem(displayUrl,width,height);
+    return new CardImageItem(displayUrl, width, height);
   }
 }

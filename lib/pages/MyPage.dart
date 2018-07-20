@@ -228,9 +228,19 @@ class MyState extends BaseState<MyPresenter, MyPage> implements MyView {
       child: new Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          _buildSingleFunctionItem(0, "ic_my_works", "作品"),
+          new InkWell(
+            onTap: () {
+              FunRouteFactory.go2ProductPage(context);
+            },
+            child: _buildSingleFunctionItem(0, "ic_my_works", "作品"),
+          ),
           _buildSingleFunctionItem(1, "ic_my_message", "消息"),
-          _buildSingleFunctionItem(2, "ic_my_collection", "收藏"),
+          new InkWell(
+            onTap: () {
+              FunRouteFactory.go2CollectionPage(context);
+            },
+            child: _buildSingleFunctionItem(2, "ic_my_collection", "收藏"),
+          ),
           _buildSingleFunctionItem(3, "ic_mine_topic", "话题"),
         ],
       ),

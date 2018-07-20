@@ -4,6 +4,7 @@ import 'package:fun_subway/business/beans/HomeBanner.dart';
 import 'package:fun_subway/business/beans/ImageBean.dart';
 import 'package:fun_subway/business/beans/PostBean.dart';
 import 'package:fun_subway/business/beans/TopicBean.dart';
+import 'package:fun_subway/business/router/FunRouter.dart';
 import 'package:fun_subway/framework/LoadMoreState.dart';
 import 'package:fun_subway/business/p/HomePresenter.dart';
 import 'package:fun_subway/utils/FunColors.dart';
@@ -11,6 +12,7 @@ import 'package:fun_subway/utils/Pair.dart';
 import 'package:fun_subway/utils/utils.dart';
 import 'package:fun_subway/utils/FunRouteFactory.dart';
 import 'package:fun_subway/business/view/HomeView.dart';
+import 'package:fun_subway/widget/BannerEntity.dart';
 import 'package:fun_subway/widget/BannerWidget.dart';
 import 'package:flutter/gestures.dart';
 import 'package:fun_subway/widget/PostWidget.dart';
@@ -329,7 +331,14 @@ class HomeState extends LoadMoreState<HomePresenter, HomePage>
 
   Widget _buildBannerWidget(Pair pair) {
     List<HomeBanner> entities = pair.second;
-    return new BannerWidget(entities: entities);
+    return new BannerWidget(
+      entities: entities,
+      bannerPress: bannerClick,
+    );
+  }
+
+  void bannerClick(int position, BannerEntity entity) {
+    FunRouter.navigate(context, entity.bannerAction);
   }
 
   @override

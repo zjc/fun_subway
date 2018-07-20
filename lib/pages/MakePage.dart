@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:fun_subway/business/beans/HomeBanner.dart';
 import 'package:fun_subway/business/beans/MakeOptionBean.dart';
 import 'package:fun_subway/business/beans/MakerBean.dart';
+import 'package:fun_subway/business/router/FunRouter.dart';
 import 'package:fun_subway/framework/BaseState.dart';
 import 'package:fun_subway/business/p/MakePresenter.dart';
 import 'package:fun_subway/business/view/MakeView.dart';
 import 'package:fun_subway/utils/FunColors.dart';
 import 'package:fun_subway/utils/utils.dart';
+import 'package:fun_subway/widget/BannerEntity.dart';
 import 'package:fun_subway/widget/BannerWidget.dart';
 
 class MakePage extends StatefulWidget {
@@ -51,7 +53,12 @@ class MakeState extends BaseState<MakePresenter, MakePage> implements MakeView {
     return new BannerWidget(
       entities: entities,
       height: bannerHeight,
+      bannerPress: bannerClick,
     );
+  }
+
+  void bannerClick(int position, BannerEntity entity) {
+    FunRouter.navigate(context, entity.bannerAction);
   }
 
   Widget _buildFunctionWidget() {
@@ -89,20 +96,25 @@ class MakeState extends BaseState<MakePresenter, MakePage> implements MakeView {
                   mainAxisSpacing: 3.0,
                   crossAxisSpacing: 3.0,
                   children: childs.map((makeOptionBean) {
-                    return new Column(
-                      children: <Widget>[
-                        new Image.network(
-                          makeOptionBean.icon,
-                          width: 85.0,
-                          height: 100.0,
-                          fit: BoxFit.contain,
-                        ),
-                        new Text(
-                          makeOptionBean.optionName,
-                          style: new TextStyle(
-                              color: FunColors.c_999, fontSize: 12.0),
-                        )
-                      ],
+                    return new InkWell(
+                      onTap: () {
+                        FunRouter.navigate(context, makeOptionBean.url);
+                      },
+                      child: new Column(
+                        children: <Widget>[
+                          new Image.network(
+                            makeOptionBean.icon,
+                            width: 85.0,
+                            height: 100.0,
+                            fit: BoxFit.contain,
+                          ),
+                          new Text(
+                            makeOptionBean.optionName,
+                            style: new TextStyle(
+                                color: FunColors.c_999, fontSize: 12.0),
+                          )
+                        ],
+                      ),
                     );
                   }).toList(),
                 );

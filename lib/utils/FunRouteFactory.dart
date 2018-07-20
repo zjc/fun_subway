@@ -5,10 +5,12 @@ import 'package:fun_subway/business/beans/ImageBean.dart';
 import 'package:fun_subway/business/beans/LoginBean.dart';
 import 'package:fun_subway/business/p/SearchPresenter.dart';
 import 'package:fun_subway/pages/AboutPage.dart';
+import 'package:fun_subway/pages/CollectionPage.dart';
 import 'package:fun_subway/pages/ImagePreviewPage.dart';
 import 'package:fun_subway/pages/LoginPage.dart';
 import 'package:fun_subway/pages/MainPage.dart';
 import 'package:fun_subway/pages/PostDetailPage.dart';
+import 'package:fun_subway/pages/ProductPage.dart';
 import 'package:fun_subway/pages/SearchPage.dart';
 import 'package:fun_subway/pages/SettingPage.dart';
 import 'package:fun_subway/pages/WebViewPage.dart';
@@ -79,18 +81,24 @@ class FunRouteFactory {
         }));
   }
 
-  static void go2WebViewPage(BuildContext context, String title, String url) {
+  static void go2WebView(
+      BuildContext context, String title, String url, bool isShowAppBar) {
     Navigator.of(context).push(new PageRouteBuilder(
         opaque: false,
         pageBuilder: (BuildContext context, _, __) {
           return WebViewPage(
+            url,
             title: title,
-            url: url,
+            isShowAppBar: isShowAppBar,
           );
         },
         transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
           return enterFromRight(animation, child);
         }));
+  }
+
+  static void go2WebViewPage(BuildContext context, String title, String url) {
+    go2WebView(context, title, url, true);
   }
 
   static void go2PostDetail(BuildContext context, int postId) {
@@ -109,6 +117,28 @@ class FunRouteFactory {
         opaque: false,
         pageBuilder: (BuildContext context, _, __) {
           return AboutPage();
+        },
+        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+          return enterFromRight(animation, child);
+        }));
+  }
+
+  static void go2ProductPage(BuildContext context) {
+    Navigator.of(context).push(new PageRouteBuilder(
+        opaque: false,
+        pageBuilder: (BuildContext context, _, __) {
+          return ProductPage();
+        },
+        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+          return enterFromRight(animation, child);
+        }));
+  }
+
+  static void go2CollectionPage(BuildContext context) {
+    Navigator.of(context).push(new PageRouteBuilder(
+        opaque: false,
+        pageBuilder: (BuildContext context, _, __) {
+          return CollectionPage();
         },
         transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
           return enterFromRight(animation, child);

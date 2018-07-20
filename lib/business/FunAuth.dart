@@ -15,6 +15,10 @@ class FunAuth {
 
   LoginBean mLoginBean;
 
+  bool isLogin(){
+    return mLoginBean != null;
+  }
+
   void saveAuth(LoginBean loginBean) async {
     if (loginBean != null && loginBean.user != null) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
