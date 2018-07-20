@@ -3,7 +3,6 @@ import 'package:fun_subway/business/beans/ImageBean.dart';
 import 'package:fun_subway/framework/BaseState.dart';
 import 'package:fun_subway/business/p/ImagePreviewPresenter.dart';
 import 'package:fun_subway/business/view/ImagePreviewView.dart';
-import 'package:fun_subway/widget/photo_view/PhotoView.dart';
 
 class ImagePreviewPage extends StatefulWidget {
   ImageBean imageBean;
@@ -116,60 +115,75 @@ class ImagePreviewState
                   child: new Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      new Column(
-                        children: <Widget>[
-                          new Image.asset(
-                            "images/ic_home_collection.png",
-                            width: 18.0,
-                            height: 17.0,
-                            fit: BoxFit.cover,
-                          ),
-                          new Padding(
-                            padding: EdgeInsets.only(top: 2.5),
-                            child: new Text(
-                              "收藏",
-                              style: new TextStyle(
-                                  fontSize: 10.0, color: Colors.white),
+                      new InkWell(
+                        onTap: () {
+                          ImageBean imageBean =
+                              widget.imageBeans[widget.currentIndex - 1];
+                          mPresenter.fav(imageBean);
+                        },
+                        child: new Column(
+                          children: <Widget>[
+                            new Image.asset(
+                              "images/ic_home_collection.png",
+                              width: 18.0,
+                              height: 17.0,
+                              fit: BoxFit.cover,
                             ),
-                          )
-                        ],
+                            new Padding(
+                              padding: EdgeInsets.only(top: 2.5),
+                              child: new Text(
+                                "收藏",
+                                style: new TextStyle(
+                                    fontSize: 10.0, color: Colors.white),
+                              ),
+                            )
+                          ],
+                        ),
                       ),
-                      new Column(
-                        children: <Widget>[
-                          new Image.asset(
-                            "images/ic_home_download.png",
-                            width: 18.0,
-                            height: 17.0,
-                            fit: BoxFit.cover,
-                          ),
-                          new Padding(
-                            padding: EdgeInsets.only(top: 2.5),
-                            child: new Text(
-                              "下载",
-                              style: new TextStyle(
-                                  fontSize: 10.0, color: Colors.white),
+                      new InkWell(
+                        onTap: () {},
+                        child: new Column(
+                          children: <Widget>[
+                            new Image.asset(
+                              "images/ic_home_download.png",
+                              width: 18.0,
+                              height: 17.0,
+                              fit: BoxFit.cover,
                             ),
-                          )
-                        ],
+                            new Padding(
+                              padding: EdgeInsets.only(top: 2.5),
+                              child: new Text(
+                                "下载",
+                                style: new TextStyle(
+                                    fontSize: 10.0, color: Colors.white),
+                              ),
+                            )
+                          ],
+                        ),
                       ),
-                      new Column(
-                        children: <Widget>[
-                          new Image.asset(
-                            "images/ic_home_share.png",
-                            width: 18.0,
-                            height: 17.0,
-                            fit: BoxFit.cover,
-                          ),
-                          new Padding(
-                            padding: EdgeInsets.only(top: 2.5),
-                            child: new Text(
-                              "分享",
-                              style: new TextStyle(
-                                  fontSize: 10.0, color: Colors.white),
+                      new InkWell(
+                        onTap: () {
+                          showShareBottomSheet(context);
+                        },
+                        child: new Column(
+                          children: <Widget>[
+                            new Image.asset(
+                              "images/ic_home_share.png",
+                              width: 18.0,
+                              height: 17.0,
+                              fit: BoxFit.cover,
                             ),
-                          )
-                        ],
-                      )
+                            new Padding(
+                              padding: EdgeInsets.only(top: 2.5),
+                              child: new Text(
+                                "分享",
+                                style: new TextStyle(
+                                    fontSize: 10.0, color: Colors.white),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 )
@@ -185,5 +199,15 @@ class ImagePreviewState
   @override
   ImagePreviewPresenter newInstance() {
     return new ImagePreviewPresenter();
+  }
+
+  @override
+  void collectFail(String reason) {
+    showToast(reason);
+  }
+
+  @override
+  void collectSuccess() {
+    showToast("收藏成功");
   }
 }

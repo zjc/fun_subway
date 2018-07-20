@@ -59,4 +59,17 @@ class ImageBeanModel extends BaseModel {
       throw exception;
     }
   }
+
+  //收藏图片
+  Future<ResponseBean<String>> collectImages(String imageIds) async {
+    Map<String, Object> params = {"imageIds": imageIds};
+    try {
+      Map<String, dynamic> map = await post(Api.COLLECT, params);
+      String bean = map["data"];
+      return newResponseBean(
+          map["code"], bean, map["error_code"], map["error_reason"]);
+    } catch (exception) {
+      throw exception;
+    }
+  }
 }

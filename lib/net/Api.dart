@@ -25,9 +25,15 @@ class Api{
 
   static const String COMMENT = "comment/info";//帖子评论
 
+  static const String LIKE_POST = "post/like";//点赞帖子
+
+  static const String UN_LIKE_POST = "post/dislike";//踩帖子
+
   static const String COLLECTION_LIST = "collection/list";//收藏列表
 
   static const String MY_WORKS = "user/image";//作品列表
 
-  static String DELETE_COLLECTION = "collection/collect";//批量删除我的收藏
+  static const String DELETE_COLLECTION = "collection/collect";//批量删除我的收藏
+
+  static const String COLLECT = "collection/collect";//收藏
 }

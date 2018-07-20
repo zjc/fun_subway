@@ -10,8 +10,8 @@ class PostBean extends BaseBean {
   final bool dislike;
   final int dislikeCount;
   final int followed;
-  final bool like;
-  final int likeCount;
+  bool like;
+  int likeCount;
   final int gmtCreate;
   final String profilePicture;
   final int id;

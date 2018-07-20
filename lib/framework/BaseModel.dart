@@ -50,6 +50,28 @@ abstract class BaseModel {
   }
 
 
+  Future<Map<String, dynamic>> post(
+      String partUrl, Map<String, Object> params) async {
+    EncryptionController controller = new EncryptionController();
+    var requestStuff = await controller.handle(partUrl, params);
+    Map<String, String> headerMap = requestStuff.headerMap;
+    String newUrl = operateUrl(Api.BASE_URL + partUrl, headerMap);
+    final response = await http.post(newUrl, headers: headerMap);
+    try {
+
+      if (response.statusCode == 200) {
+        String result = response.body.toString();
+        print("request url:"+newUrl+";response data:"+result);
+        return json.decode(result);
+      } else {
+        throw new Exception("failed to get data " + (response.body.toString()));
+      }
+    } catch (exception) {
+      throw new Exception("exception:" + exception.toString());
+    }
+  }
+
+
   ResponseBean<T> newResponseBean<T>(
       String code, T data, String error_code, String error_reason) {
     return new ResponseBean(

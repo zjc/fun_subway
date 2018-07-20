@@ -176,25 +176,34 @@ class PostState extends BaseState<PostPresenter, PostWidget>
               ),
             ],
           ),
-          new Row(
-            children: <Widget>[
-              new Image.asset(
-                '${postBean.like
+          new InkWell(
+            onTap: () {
+              if(postBean.like){
+                mPresenter.unlike(postBean);
+              }else{
+                mPresenter.like(postBean);
+              }
+            },
+            child: new Row(
+              children: <Widget>[
+                new Image.asset(
+                  '${postBean.like
                     ? "images/ic_home_like.png"
                     : "images/ic_home_unlike.png"}',
-                width: 19.0,
-                height: 17.0,
-                fit: BoxFit.cover,
-              ),
-              new Padding(
-                padding: EdgeInsets.only(left: 6.0),
-                child: new Text(
-                  '${postBean.likeCount}',
-                  style:
-                      new TextStyle(color: Color(0xff666666), fontSize: 14.0),
+                  width: 19.0,
+                  height: 17.0,
+                  fit: BoxFit.cover,
                 ),
-              ),
-            ],
+                new Padding(
+                  padding: EdgeInsets.only(left: 6.0),
+                  child: new Text(
+                    '${postBean.likeCount}',
+                    style:
+                        new TextStyle(color: Color(0xff666666), fontSize: 14.0),
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -394,5 +403,31 @@ class PostState extends BaseState<PostPresenter, PostWidget>
   @override
   PostPresenter newInstance() {
     return new PostPresenter();
+  }
+
+  @override
+  void likeFail() {
+    showToast("点赞失败");
+  }
+
+  @override
+  void likeSuccess(PostBean postBean) {
+    showToast("点赞成功");
+    setState(() {
+      widget.postBean = postBean;
+    });
+  }
+
+  @override
+  void unlikeFail() {
+    showToast("取消点赞失败");
+  }
+
+  @override
+  void unlikeSuccess(PostBean postBean) {
+    showToast("取消点赞成功");
+    setState(() {
+      widget.postBean = postBean;
+    });
   }
 }

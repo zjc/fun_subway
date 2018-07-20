@@ -34,4 +34,31 @@ class PostModel extends BaseModel {
       throw exception;
     }
   }
+
+
+  Future<ResponseBean<String>> like(int postId) async{
+    try {
+      Map<String, Object> params = {"postId": postId};
+      Map<String, dynamic> map = await post(Api.LIKE_POST, params);
+      String bean = map["data"];
+      return newResponseBean(
+          map["code"], bean, map["error_code"], map["error_reason"]);
+    } catch (exception) {
+      throw exception;
+    }
+  }
+
+  Future<ResponseBean<String>> unlike(int postId) async{
+    try {
+      Map<String, Object> params = {"postId": postId};
+      Map<String, dynamic> map = await post(Api.UN_LIKE_POST, params);
+      String bean = map["data"];
+      return newResponseBean(
+          map["code"], bean, map["error_code"], map["error_reason"]);
+    } catch (exception) {
+      throw exception;
+    }
+  }
+
+
 }
