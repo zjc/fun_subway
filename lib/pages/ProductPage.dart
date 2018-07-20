@@ -15,21 +15,32 @@ class ProductPage extends StatefulWidget {
 
 class ProductState extends LoadMoreState<ProductPresenter, ProductPage>
     implements ImageBeanView {
+  bool isEditModel = false; //是否编辑模式
   @override
   void initState() {
     super.initState();
     mPresenter.fetchData();
   }
 
+  List<int> _selectImageBeans = [];
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: defaultAppBar("我的作品", [
         new InkWell(
-          onTap: () {},
-          child: new Padding(
-            padding: EdgeInsets.only(right: 15.0),
-            child: new Text("编辑"),
+          onTap: () {
+            setState(() {
+              isEditModel = !isEditModel;
+            });
+          },
+          child: new Container(
+            alignment: Alignment.center,
+            padding: EdgeInsets.only(right: 15.0, left: 15.0),
+            child: new Text(
+              "编辑",
+              style: new TextStyle(color: FunColors.c_333, fontSize: 16.0),
+            ),
           ),
         )
       ]),
@@ -38,8 +49,6 @@ class ProductState extends LoadMoreState<ProductPresenter, ProductPage>
   }
 
   Widget _buildBody() {
-    double width = (UIUtils.getScreenWidth(context) - 16.0) / 3;
-
     return new ListView(
       scrollDirection: Axis.vertical,
       controller: mScrollController,
@@ -49,15 +58,55 @@ class ProductState extends LoadMoreState<ProductPresenter, ProductPage>
           crossAxisCount: 3,
           crossAxisSpacing: 3.0,
           mainAxisSpacing: 3.0,
+          shrinkWrap: true,
+          scrollDirection: Axis.vertical,
           childAspectRatio: 1.0,
           children: _dataSource.map((imageBean) {
+            double width = (UIUtils.getScreenWidth(context) - 16.0) / 3;
             String displayUrl =
                 ImageBean.getDisplayUrl(isNetworkAvailable, isWifi, imageBean);
-            return buildCardImageItem(displayUrl, width, width);
+            return new Stack(
+              alignment: Alignment.topRight,
+              children: <Widget>[
+                buildCardImageItem(displayUrl, width, width),
+                new Container(
+                  color: isEditModel ? new Color(0x7fffffff): Colors.transparent,
+                ),
+                _buildSelector(imageBean),
+              ],
+            );
           }).toList(),
         ),
       ],
     );
+  }
+
+  Widget _buildSelector(ImageBean imageBean) {
+    if (isEditModel) {
+      if (_selectImageBeans.contains(imageBean.id)) {
+        return new Container(
+          margin: EdgeInsets.only(right: 5.0, top: 5.0),
+          child: new Image.asset(
+            "images/ic_image_selected.png",
+            width: 30.0,
+            height: 30.0,
+            fit: BoxFit.contain,
+          ),
+        );
+      } else {
+        return new Container(
+          margin: EdgeInsets.only(right: 5.0, top: 5.0),
+          child: new Image.asset(
+            "images/ic_image_unselected.png",
+            width: 30.0,
+            height: 30.0,
+            fit: BoxFit.contain,
+          ),
+        );
+      }
+    } else {
+      return new Container();
+    }
   }
 
   @override

@@ -70,6 +70,8 @@ flutter:
     - images/ic_share_qq.png
     - images/ic_share_qq_zone.png
     - images/ic_share_weibo.png
+    - images/ic_image_selected.png
+    - images/ic_image_unselected.png
 
 
   # To add assets to your application, add an assets section, like this:

@@ -39,8 +39,6 @@ class CollectionState extends LoadMoreState<CollectionPresenter, CollectionPage>
   }
 
   Widget _buildBody() {
-    double width = (UIUtils.getScreenWidth(context) - 16.0) / 3;
-
     return new ListView(
       scrollDirection: Axis.vertical,
       controller: mScrollController,
@@ -51,9 +49,12 @@ class CollectionState extends LoadMoreState<CollectionPresenter, CollectionPage>
           crossAxisSpacing: 3.0,
           mainAxisSpacing: 3.0,
           childAspectRatio: 1.0,
+          shrinkWrap:true,
+          scrollDirection: Axis.vertical,
           children: _dataSource.map((imageBean) {
             String displayUrl =
                 ImageBean.getDisplayUrl(isNetworkAvailable, isWifi, imageBean);
+            double width = (UIUtils.getScreenWidth(context) - 16.0) / 3;
             return buildCardImageItem(displayUrl, width, width);
           }).toList(),
         ),

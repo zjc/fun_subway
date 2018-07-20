@@ -248,21 +248,18 @@ class MyState extends BaseState<MyPresenter, MyPage> implements MyView {
   }
 
   Widget _buildSingleFunctionItem(int index, String imageName, String name) {
-    return new InkWell(
-      onTap: () {},
-      child: new Column(
-        children: <Widget>[
-          new Image.asset(
-            "images/" + imageName + ".png",
-            width: 22.0,
-            height: 22.0,
-          ),
-          new Text(
-            name,
-            style: new TextStyle(color: FunColors.c_333, fontSize: 16.0),
-          ),
-        ],
-      ),
+    return new Column(
+      children: <Widget>[
+        new Image.asset(
+          "images/" + imageName + ".png",
+          width: 22.0,
+          height: 22.0,
+        ),
+        new Text(
+          name,
+          style: new TextStyle(color: FunColors.c_333, fontSize: 16.0),
+        ),
+      ],
     );
   }
 

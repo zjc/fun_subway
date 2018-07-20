@@ -33,6 +33,7 @@ class HomeState extends LoadMoreState<HomePresenter, HomePage>
         title: _buildSearchWidget(),
         backgroundColor: Colors.white,
         elevation: 0.0,
+        automaticallyImplyLeading: false,
       ),
       body: _buildListWidget(),
       floatingActionButton: new FloatingActionButton(
@@ -138,7 +139,7 @@ class HomeState extends LoadMoreState<HomePresenter, HomePage>
   Widget _buildSearchWidget() {
     return new Row(
       mainAxisSize: MainAxisSize.max,
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         new Expanded(
             child: new OutlineButton.icon(
