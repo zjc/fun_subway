@@ -17,10 +17,10 @@ abstract class LoadMoreState<PRESENTER extends LoadMorePresenter,
   @override
   void initState() {
     super.initState();
-    mScrollController = new ScrollController()..addListener(_scrollListener);
+    mScrollController = new ScrollController()..addListener(scrollListener);
   }
 
-  void _scrollListener() {
+  void scrollListener() {
     if (mScrollController.position.pixels ==
         mScrollController.position.maxScrollExtent) {
       mPresenter.loadMore();
@@ -41,7 +41,7 @@ abstract class LoadMoreState<PRESENTER extends LoadMorePresenter,
   @override
   void dispose() {
     super.dispose();
-    mScrollController.removeListener(_scrollListener);
+    mScrollController.removeListener(scrollListener);
     mScrollController = null;
   }
 

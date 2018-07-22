@@ -8,4 +8,14 @@ abstract class PostView extends BaseView{
   void unlikeSuccess(PostBean postBean);
 
   void unlikeFail();
+
+
+  void followSuccess(PostBean postBean);
+
+  void followFail();
+
+  void unFollowSuccess(PostBean postBean);
+
+  void unFollowFail();
+
 }

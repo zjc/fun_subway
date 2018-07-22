@@ -18,6 +18,7 @@ class PostWidget extends StatefulWidget {
   static const SOURCE_TYPE_HOME = 0;
   static const SOURCE_TYPE_POST = 1;
   static const SOURCE_TYPE_POST_USER = 2;
+  static const SOURCE_TYPE_TOPIC = 3;
 
   PostBean postBean;
 
@@ -38,10 +39,10 @@ class PostState extends BaseState<PostPresenter, PostWidget>
   @override
   Widget build(BuildContext context) {
     switch (widget.sourceType) {
-      case PostWidget.SOURCE_TYPE_HOME:
-        return _buildHomePostWrapperWidget(widget.postBean);
-      default:
+      case PostWidget.SOURCE_TYPE_POST:
         return _buildPostWidget(widget.postBean);
+      default:
+        return _buildPostWrapperWidget(widget.postBean);
     }
   }
 
@@ -66,7 +67,7 @@ class PostState extends BaseState<PostPresenter, PostWidget>
   }
 
   Widget _buildCommentWidget(PostBean postBean) {
-    if (postBean.great == null) {
+    if (postBean.great == null || widget.sourceType == 3) {
       //没有神评论
       return new Container();
     }
@@ -178,9 +179,9 @@ class PostState extends BaseState<PostPresenter, PostWidget>
           ),
           new InkWell(
             onTap: () {
-              if(postBean.like){
+              if (postBean.like) {
                 mPresenter.unlike(postBean);
-              }else{
+              } else {
                 mPresenter.like(postBean);
               }
             },
@@ -188,8 +189,8 @@ class PostState extends BaseState<PostPresenter, PostWidget>
               children: <Widget>[
                 new Image.asset(
                   '${postBean.like
-                    ? "images/ic_home_like.png"
-                    : "images/ic_home_unlike.png"}',
+                      ? "images/ic_home_like.png"
+                      : "images/ic_home_unlike.png"}',
                   width: 19.0,
                   height: 17.0,
                   fit: BoxFit.cover,
@@ -210,7 +211,7 @@ class PostState extends BaseState<PostPresenter, PostWidget>
     );
   }
 
-  Widget _buildHomePostWrapperWidget(PostBean postBean) {
+  Widget _buildPostWrapperWidget(PostBean postBean) {
     return new Container(
       color: Colors.white,
       child: new Column(
@@ -318,7 +319,26 @@ class PostState extends BaseState<PostPresenter, PostWidget>
   }
 
   Widget _buildPostAvatarRight(PostBean postBean) {
-    if (widget.sourceType == PostWidget.SOURCE_TYPE_HOME) {
+    if (widget.sourceType == PostWidget.SOURCE_TYPE_POST) {
+      return new RaisedButton(
+        highlightColor: FunColors.themeColor,
+        onPressed: () {
+          if (postBean.isFollow()) {
+            mPresenter.unFollow(postBean);
+          } else {
+            mPresenter.follow(postBean);
+          }
+        },
+        color: postBean.isFollow() ? FunColors.c_eee : FunColors.themeColor,
+        shape: new RoundedRectangleBorder(
+          borderRadius: new BorderRadius.circular(20.0),
+        ),
+        child: new Text(
+          postBean.isFollow() ? "已关注" : "关注",
+          style: new TextStyle(color: Colors.white),
+        ),
+      );
+    } else {
       return new InkWell(
         onTap: () {
           if (widget.deletePostCallback != null) {
@@ -330,19 +350,6 @@ class PostState extends BaseState<PostPresenter, PostWidget>
           width: 22.0,
           height: 16.0,
           fit: BoxFit.cover,
-        ),
-      );
-    } else {
-      return new RaisedButton(
-        highlightColor: FunColors.themeColor,
-        onPressed: () {},
-        color: FunColors.themeColor,
-        shape: new RoundedRectangleBorder(
-          borderRadius: new BorderRadius.circular(20.0),
-        ),
-        child: new Text(
-          "关注",
-          style: new TextStyle(color: Colors.white),
         ),
       );
     }
@@ -365,10 +372,7 @@ class PostState extends BaseState<PostPresenter, PostWidget>
 
       final TapGestureRecognizer recognizer = new TapGestureRecognizer();
       recognizer.onTap = () {
-        //TODO 跳转话题界面
-        Scaffold.of(context).showSnackBar(new SnackBar(
-              content: new Text('话题被点击!'),
-            ));
+        FunRouteFactory.go2TopicDetailPage(context, postBean.topicNames);
       };
 
       return new Container(
@@ -413,9 +417,7 @@ class PostState extends BaseState<PostPresenter, PostWidget>
   @override
   void likeSuccess(PostBean postBean) {
     showToast("点赞成功");
-    setState(() {
-      widget.postBean = postBean;
-    });
+    updateStatus(postBean);
   }
 
   @override
@@ -423,11 +425,37 @@ class PostState extends BaseState<PostPresenter, PostWidget>
     showToast("取消点赞失败");
   }
 
-  @override
-  void unlikeSuccess(PostBean postBean) {
-    showToast("取消点赞成功");
+  void updateStatus(PostBean postBean) {
     setState(() {
       widget.postBean = postBean;
     });
+  }
+
+  @override
+  void unlikeSuccess(PostBean postBean) {
+    showToast("取消点赞成功");
+    updateStatus(postBean);
+  }
+
+  @override
+  void followFail() {
+    showToast("关注失败");
+  }
+
+  @override
+  void followSuccess(PostBean postBean) {
+    showToast("关注成功");
+    updateStatus(postBean);
+  }
+
+  @override
+  void unFollowFail() {
+    showToast("取消关注失败");
+  }
+
+  @override
+  void unFollowSuccess(PostBean postBean) {
+    showToast("取消关注成功");
+    updateStatus(postBean);
   }
 }

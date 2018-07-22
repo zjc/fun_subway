@@ -9,7 +9,7 @@ class PostBean extends BaseBean {
   final int commentCount;
   final bool dislike;
   final int dislikeCount;
-  final int followed;
+  int followed;
   bool like;
   int likeCount;
   final int gmtCreate;
@@ -68,6 +68,13 @@ class PostBean extends BaseBean {
       great: CommentBean.fromJson(map["great"]),
       ellipses: map["ellipses"],
     );
+  }
+
+  bool isFollow(){
+    if (followed == 1 || followed == 2) {
+      return true;//已关注
+    }
+    return false;
   }
 
   Map<String, dynamic> toJson() => {

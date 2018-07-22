@@ -72,6 +72,10 @@ flutter:
     - images/ic_share_weibo.png
     - images/ic_image_selected.png
     - images/ic_image_unselected.png
+    - images/ic_publish_topic.png
+    - images/ic_publish_show.png
+    - images/ic_publish_image_selector.png
+    - images/bg_topic_detail_placeholder.png
 
 
   # To add assets to your application, add an assets section, like this:

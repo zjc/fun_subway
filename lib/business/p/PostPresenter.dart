@@ -1,5 +1,6 @@
 import 'package:fun_subway/business/beans/PostBean.dart';
 import 'package:fun_subway/business/model/PostModel.dart';
+import 'package:fun_subway/business/model/UserProfileModel.dart';
 import 'package:fun_subway/business/view/PostView.dart';
 import 'package:fun_subway/framework/BasePresenter.dart';
 
@@ -32,6 +33,30 @@ class PostPresenter extends BasePresenter<PostView, PostModel> {
         return;
       }
       getView()?.likeFail();
+    });
+  }
+
+  void follow(PostBean postBean) {
+    userProfileModel.follow(postBean.userId).then((responseBean) {
+      if (responseBean.isSuccess()) {
+        postBean.followed = responseBean.data.followed;
+        getView()?.followSuccess(postBean);
+        return;
+      }
+      getView()?.followFail();
+    });
+  }
+
+  UserProfileModel userProfileModel = new UserProfileModel();
+
+  void unFollow(PostBean postBean) {
+    userProfileModel.unFollow(postBean.userId).then((responseBean) {
+      if (responseBean.isSuccess()) {
+        postBean.followed = responseBean.data.followed;
+        getView()?.unFollowSuccess(postBean);
+        return;
+      }
+      getView()?.unFollowFail();
     });
   }
 }

@@ -9,10 +9,13 @@ import 'package:fun_subway/pages/CollectionPage.dart';
 import 'package:fun_subway/pages/ImagePreviewPage.dart';
 import 'package:fun_subway/pages/LoginPage.dart';
 import 'package:fun_subway/pages/MainPage.dart';
+import 'package:fun_subway/pages/MyTopicPage.dart';
 import 'package:fun_subway/pages/PostDetailPage.dart';
+import 'package:fun_subway/pages/PostPublishPage.dart';
 import 'package:fun_subway/pages/ProductPage.dart';
 import 'package:fun_subway/pages/SearchPage.dart';
 import 'package:fun_subway/pages/SettingPage.dart';
+import 'package:fun_subway/pages/TopicDetailPage.dart';
 import 'package:fun_subway/pages/WebViewPage.dart';
 
 class FunRouteFactory {
@@ -139,6 +142,47 @@ class FunRouteFactory {
         opaque: false,
         pageBuilder: (BuildContext context, _, __) {
           return CollectionPage();
+        },
+        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+          return enterFromRight(animation, child);
+        }));
+  }
+
+  static void go2TopicDetailPage(BuildContext context, String topicName) {
+    Navigator.of(context).push(new PageRouteBuilder(
+        opaque: false,
+        pageBuilder: (BuildContext context, _, __) {
+          return TopicDetailPage(topicName);
+        },
+        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+          return enterFromRight(animation, child);
+        }));
+  }
+
+  static void go2PostPublishPage(BuildContext context) {
+    go2PublishPage(context, null, null);
+  }
+
+  static void go2PublishPage(
+      BuildContext context, String topicName, ImageBean imageBean) {
+    Navigator.of(context).push(new PageRouteBuilder(
+        opaque: false,
+        pageBuilder: (BuildContext context, _, __) {
+          return PostPublishPage(
+            topicName: topicName,
+            imageBean: imageBean,
+          );
+        },
+        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+          return enterFromRight(animation, child);
+        }));
+  }
+
+  static void go2MyTopicPage(BuildContext context) {
+    Navigator.of(context).push(new PageRouteBuilder(
+        opaque: false,
+        pageBuilder: (BuildContext context, _, __) {
+          return MyTopicPage();
         },
         transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
           return enterFromRight(animation, child);

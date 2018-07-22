@@ -36,4 +36,14 @@ class Api{
   static const String DELETE_COLLECTION = "collection/collect";//批量删除我的收藏
 
   static const String COLLECT = "collection/collect";//收藏
+
+  static const String USER_FOLLOW = "userRelation/follow";//关注
+
+  static const String TOPIC_FOLLOW = "topic/follow";//我的话题
+
+  static const String TOPIC_DETAIL = "topic/info";//话题详情
+
+  static final String NEW_TOPIC = "topic/feedNew";//最新帖子
+
+  static final String HOTTEST_TOPIC = "topic/feedHot";//最热帖子
 }

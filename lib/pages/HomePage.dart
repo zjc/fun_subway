@@ -40,7 +40,7 @@ class HomeState extends LoadMoreState<HomePresenter, HomePage>
         backgroundColor: FunColors.themeColor,
         tooltip: "jump to publish",
         onPressed: () {
-          showSimpleSnackbar("跳转发布界面");
+          FunRouteFactory.go2PostPublishPage(context);
         },
         child: new Icon(Icons.add),
       ),
@@ -181,8 +181,7 @@ class HomeState extends LoadMoreState<HomePresenter, HomePage>
                 new Text("热聊话题"),
                 new InkWell(
                   onTap: () {
-                    //TODO 关注的话题
-                    showSimpleSnackbar("关注的话题");
+                    FunRouteFactory.go2MyTopicPage(context);
                   },
                   child: new Row(
                     children: <Widget>[
@@ -212,7 +211,7 @@ class HomeState extends LoadMoreState<HomePresenter, HomePage>
                   String name = "#" + topicBean.name;
                   return new InkWell(
                     onTap: () {
-                      showSimpleSnackbar("点击话题<" + name + ">");
+                      FunRouteFactory.go2TopicDetailPage(context, topicBean.name);
                     },
                     child: new Padding(
                       padding: EdgeInsets.only(right: 5.0),
