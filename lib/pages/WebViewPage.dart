@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+import 'package:fun_subway/plugins/webview/webview_scaffold.dart';
+
 import 'package:fun_subway/utils/FunColors.dart';
 
 class WebViewPage extends StatefulWidget {
@@ -35,8 +36,13 @@ class WebViewState extends State<WebViewPage> {
         withLocalStorage: true,
       );
     } else {
-      return new WebviewScaffold(
-        url: widget.url,
+      return new Scaffold(
+        body: new Container(
+          padding: const EdgeInsets.only(top: 30.0),
+          child: new WebviewScaffold(
+            url: widget.url,
+          ),
+        ),
       );
     }
   }

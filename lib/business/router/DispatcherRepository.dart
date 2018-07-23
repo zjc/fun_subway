@@ -8,6 +8,7 @@ import 'package:fun_subway/business/router/dispatchers/LoginInterceptDispatcher.
 import 'package:fun_subway/business/router/dispatchers/PostDetailDispatcher.dart';
 import 'package:fun_subway/business/router/dispatchers/SearchDispatcher.dart';
 import 'package:fun_subway/business/router/dispatchers/TemplateMakerDispatcher.dart';
+import 'package:fun_subway/business/router/dispatchers/TopicDetailDispatcher.dart';
 
 class DispatcherRepository {
   static final DispatcherRepository _singleton =
@@ -46,6 +47,7 @@ class DispatcherRepository {
     dispatcherHashMap[FunScheme.HTTP] = new HttpDispatcher();
     dispatcherHashMap[FunScheme.SEARCH_LIST] = new SearchDispatcher();
     dispatcherHashMap[FunScheme.TEMPLATE_MAKER] = new TemplateMakerDispatcher();
+    dispatcherHashMap[FunScheme.TOPIC_DETAIL] = new TopicDetailDispatcher();
     //TODO add other dispatcher router
 
     //add action

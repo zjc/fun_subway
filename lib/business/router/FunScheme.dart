@@ -3,19 +3,19 @@ class FunScheme{
 
   static final String SOQU = "soqu";
 
-  static final String POST_DETAIL = "feedDetail";
+  static final String POST_DETAIL = "feeddetail";
 
-  static final String SEARCH_LIST = "searchResult";
+  static final String SEARCH_LIST = "searchresult";
 
-  static final String TEMPLATE_MAKER = "makeImg";
+  static final String TEMPLATE_MAKER = "makeimg";
 
+
+  static final String TOPIC_DETAIL = "topicdetail";
 
   //未实现的scheme
-  static final String TOPIC_DETAIL = "topicDetail";
-
   static final String FANS_LIST = "fanlist";
 
-  static final String MESSAGE_DETAIL = "messageDetail";
+  static final String MESSAGE_DETAIL = "messagedetail";
 
-  static final String PHOTO_MAKER = "photoMake";
+  static final String PHOTO_MAKER = "photomake";
 }

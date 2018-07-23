@@ -100,13 +100,6 @@
             </list>
           </value>
         </entry>
-        <entry key="flutter_webview_plugin">
-          <value>
-            <list>
-              <option value="$USER_HOME$/soft/work/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_webview_plugin-0.1.6/lib" />
-            </list>
-          </value>
-        </entry>
         <entry key="front_end">
           <value>
             <list>
@@ -444,7 +437,6 @@
       <root url="file://$USER_HOME$/soft/work/flutter/.pub-cache/hosted/pub.dartlang.org/cupertino_icons-0.1.2/lib" />
       <root url="file://$USER_HOME$/soft/work/flutter/.pub-cache/hosted/pub.dartlang.org/device_info-0.2.1/lib" />
       <root url="file://$USER_HOME$/soft/work/flutter/.pub-cache/hosted/pub.dartlang.org/english_words-3.1.0/lib" />
-      <root url="file://$USER_HOME$/soft/work/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_webview_plugin-0.1.6/lib" />
       <root url="file://$USER_HOME$/soft/work/flutter/.pub-cache/hosted/pub.dartlang.org/front_end-0.1.0-alpha.12/lib" />
       <root url="file://$USER_HOME$/soft/work/flutter/.pub-cache/hosted/pub.dartlang.org/glob-1.1.5/lib" />
       <root url="file://$USER_HOME$/soft/work/flutter/.pub-cache/hosted/pub.dartlang.org/html-0.13.3/lib" />
