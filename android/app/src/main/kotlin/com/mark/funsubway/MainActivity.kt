@@ -7,6 +7,7 @@ import io.flutter.plugins.GeneratedPluginRegistrant
 import io.flutter.plugins.ToastProviderPlugins
 import io.flutter.plugins.NetProviderPlugins
 import io.flutter.plugins.webview.FlutterWebviewPlugin
+import io.flutter.plugins.DownloadProviderPlugin
 
 class MainActivity(): FlutterActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -15,5 +16,6 @@ class MainActivity(): FlutterActivity() {
     ToastProviderPlugins.register(this,flutterView)
     NetProviderPlugins.register(this,flutterView)
     FlutterWebviewPlugin.register(this,flutterView)
+    DownloadProviderPlugin.register(this,flutterView)
   }
 }

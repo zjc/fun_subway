@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fun_subway/business/beans/ImageBean.dart';
 import 'package:fun_subway/framework/BaseState.dart';
 import 'package:fun_subway/business/p/ImagePreviewPresenter.dart';
@@ -34,6 +35,8 @@ class ImagePreviewState
     extends BaseState<ImagePreviewPresenter, ImagePreviewPage>
     implements ImagePreviewView {
   PageController controller;
+
+  static const _downloadPlatform = const MethodChannel('com.fun.framework.plugins/download');
 
   @override
   void initState() {
@@ -141,7 +144,10 @@ class ImagePreviewState
                         ),
                       ),
                       new InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          ImageBean imageBean = widget.imageBeans[widget.currentIndex - 1];
+                          downloadImage(imageBean.getOriginalUrl());
+                        },
                         child: new Column(
                           children: <Widget>[
                             new Image.asset(
@@ -189,6 +195,17 @@ class ImagePreviewState
                 )
               ]),
         ));
+  }
+
+  void downloadImage(String url) {
+    try {
+      //调用相应方法，并传入相关参数。
+      if (_downloadPlatform != null) {
+        _downloadPlatform.invokeMethod('downloadImage', {'url': url});
+      }
+    } catch (exception) {
+      print(exception);
+    }
   }
 
   onPageChanged(index) {

@@ -6,7 +6,7 @@ import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.MethodChannel
 
 object ToastProviderPlugins {
-    private const val ChannelName = "com.fun.framework.plugins/toast";
+    private const val ChannelName = "com.fun.framework.plugins/toast"
     
     fun register(context: Context, messenger: BinaryMessenger) = MethodChannel(messenger, ChannelName).setMethodCallHandler { methodCall, result ->
         when (methodCall.method) {
